@@ -39,7 +39,7 @@ const TICKET_TIERS = {
 const BASE_CONFIG = {
     amount: "799",
     upiId: "8281651978@slc",
-    payeeName: "KEVIN GEORGE (UNFOLD'26)",
+    payeeName: "KEVIN GEORGE",
     transactionNote: "UNFOLD 2026",
     ticketLabel: "Solo Pass",
     ticketDescription: "Includes 1 participant registration & full bootcamp access",
