@@ -1,7 +1,6 @@
 /**
- * UNFOLD'26 Production UPI Payment Redirect Main Script
- * Handles dynamic content population, query params, desktop/mobile split flow,
- * QR code rendering, clipboard utilities, and completion handoff.
+ * UNFOLD 2026 Production UPI Payment Handshake Script
+ * Razorpay-Grade App Selector & Pass Switcher Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,9 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const upiIdValEl = document.getElementById('upiIdVal');
     const ticketLabelEl = document.getElementById('ticketLabel');
     const btnOpenUpi = document.getElementById('btnOpenUpi');
-    const redirectLoadingBox = document.getElementById('redirectLoadingBox');
     const desktopNotice = document.getElementById('desktopNotice');
-    const fallbackSection = document.getElementById('fallbackSection');
     const qrContainer = document.getElementById('qrContainer');
     const copyAmountBtn = document.getElementById('copyAmountBtn');
     const copyUpiBtn = document.getElementById('copyUpiBtn');
@@ -25,9 +22,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const toastMessage = document.getElementById('toastMessage');
     const ticketTabs = document.querySelectorAll('.ticket-tab');
 
+    // Individual App Chips
+    const appGPay = document.getElementById('appGPay');
+    const appPhonePe = document.getElementById('appPhonePe');
+    const appPaytm = document.getElementById('appPaytm');
+    const appBhim = document.getElementById('appBhim');
+
     // Completion Modal Elements
     const completionModal = document.getElementById('completionModal');
     const btnCloseModal = document.getElementById('btnCloseModal');
+
+    /**
+     * Build app-specific UPI URIs for Razorpay-style direct app launch
+     * @param {string} baseUri 
+     * @returns {Object}
+     */
+    function buildAppDeepLinks(baseUri) {
+        const rawParams = baseUri.replace('upi://pay?', '');
+        return {
+            any: baseUri,
+            gpay: `gpay://upi/pay?${rawParams}`,
+            phonepe: `phonepe://pay?${rawParams}`,
+            paytm: `paytmmp://pay?${rawParams}`,
+            bhim: baseUri
+        };
+    }
 
     /**
      * Render UI components based on target configuration
@@ -36,20 +55,48 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderPaymentDetails(cfg) {
         currentConfig = cfg;
         const upiDeepLink = getUpiDeepLink(cfg);
+        const appLinks = buildAppDeepLinks(upiDeepLink);
 
+        // Update Amount & Text Details
         const formattedAmount = isNaN(Number(cfg.amount)) ? cfg.amount : Number(cfg.amount).toLocaleString('en-IN');
         if (amountValEl) amountValEl.textContent = `₹${formattedAmount}`;
         if (payeeValEl) payeeValEl.textContent = cfg.payeeName;
         if (upiIdValEl) upiIdValEl.textContent = cfg.upiId;
         if (ticketLabelEl) ticketLabelEl.textContent = cfg.ticketLabel || cfg.name || 'Solo Pass';
-        if (btnOpenUpi) btnOpenUpi.href = upiDeepLink;
+
+        // Update Main Primary Handoff Link
+        if (btnOpenUpi) {
+            btnOpenUpi.href = appLinks.any;
+            btnOpenUpi.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = appLinks.any;
+            };
+        }
+
+        // Update Specific App Links
+        if (appGPay) {
+            appGPay.href = appLinks.gpay;
+            appGPay.onclick = (e) => { e.preventDefault(); tryLaunchApp(appLinks.gpay, appLinks.any); };
+        }
+        if (appPhonePe) {
+            appPhonePe.href = appLinks.phonepe;
+            appPhonePe.onclick = (e) => { e.preventDefault(); tryLaunchApp(appLinks.phonepe, appLinks.any); };
+        }
+        if (appPaytm) {
+            appPaytm.href = appLinks.paytm;
+            appPaytm.onclick = (e) => { e.preventDefault(); tryLaunchApp(appLinks.paytm, appLinks.any); };
+        }
+        if (appBhim) {
+            appBhim.href = appLinks.bhim;
+            appBhim.onclick = (e) => { e.preventDefault(); window.location.href = appLinks.bhim; };
+        }
 
         // Update Document Title
         if (cfg.ticketLabel && cfg.ticketLabel !== 'Standard Registration') {
-            document.title = `UNFOLD'26 Payment - ${cfg.ticketLabel}`;
+            document.title = `UNFOLD 2026 Payment - ${cfg.ticketLabel}`;
         }
 
-        // Render QR Code
+        // Render QR Code Canvas
         if (qrContainer && typeof window.EasyQRCode === 'function') {
             window.EasyQRCode(qrContainer, upiDeepLink, 180);
         }
@@ -57,22 +104,41 @@ document.addEventListener('DOMContentLoaded', () => {
         // Highlight Active Ticket Tab
         if (ticketTabs) {
             ticketTabs.forEach(tab => {
-                const isSelected = (tab.getAttribute('data-ticket') === cfg.ticketKey);
+                const key = tab.getAttribute('data-ticket');
+                const isSelected = (key === cfg.ticketKey);
                 tab.classList.toggle('active', isSelected);
                 tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
             });
         }
     }
 
+    /**
+     * Try launching specific custom app scheme with fallback to standard upi://
+     * @param {string} primaryScheme 
+     * @param {string} fallbackScheme 
+     */
+    function tryLaunchApp(primaryScheme, fallbackScheme) {
+        let timer = setTimeout(() => {
+            window.location.href = fallbackScheme;
+        }, 800);
+
+        window.location.href = primaryScheme;
+
+        window.addEventListener('blur', () => {
+            clearTimeout(timer);
+        }, { once: true });
+    }
+
     // Initial render
     renderPaymentDetails(currentConfig);
 
-    // Bind Ticket Selection Tabs
+    // Bind Ticket Selection Tabs (Click Handler)
     if (ticketTabs) {
         ticketTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const key = tab.getAttribute('data-ticket');
-                if (TICKET_TIERS[key]) {
+            tab.addEventListener('click', (e) => {
+                const targetBtn = e.currentTarget;
+                const key = targetBtn.getAttribute('data-ticket');
+                if (key && TICKET_TIERS[key]) {
                     const newConfig = {
                         ...currentConfig,
                         amount: TICKET_TIERS[key].amount,
@@ -80,8 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         transactionNote: TICKET_TIERS[key].note,
                         ticketKey: key
                     };
-                    
-                    // Update URL query string without page reload
+
+                    // Update URL query parameter without page reload
                     if (window.history && window.history.replaceState) {
                         const newUrl = window.location.pathname + `?ticket=${key}`;
                         window.history.replaceState(null, '', newUrl);
@@ -93,54 +159,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Device Detection & Split Flow Execution
+    // Desktop Device Notice Logic
     const isMobile = checkIsMobile();
-
-    if (isMobile) {
-        // Mobile Mode: Show redirect loading spinner, hide desktop notice
-        if (redirectLoadingBox) redirectLoadingBox.classList.remove('hidden');
-        if (desktopNotice) desktopNotice.classList.add('hidden');
-        if (fallbackSection) fallbackSection.classList.add('hidden');
-
-        // Step 1: Attempt automatic UPI app launch after autoRedirectDelay (~500ms)
-        setTimeout(() => {
-            window.location.href = upiDeepLink;
-        }, config.autoRedirectDelay || 500);
-
-        // Step 2: Reveal fallback options after fallbackDelay (~2000ms) if user remains on page
-        setTimeout(() => {
-            if (redirectLoadingBox) redirectLoadingBox.classList.add('hidden');
-            if (fallbackSection) fallbackSection.classList.remove('hidden');
-        }, config.fallbackDelay || 2000);
-
-    } else {
-        // Desktop Mode: DO NOT attempt auto redirect. Hide spinner, show desktop notice & QR fallback immediately
-        if (redirectLoadingBox) redirectLoadingBox.classList.add('hidden');
-        if (desktopNotice) desktopNotice.classList.remove('hidden');
-        if (fallbackSection) fallbackSection.classList.remove('hidden');
+    if (!isMobile && desktopNotice) {
+        desktopNotice.classList.remove('hidden');
     }
 
-    // 6. Copy to Clipboard Event Listeners
+    // Copy to Clipboard Handlers
     if (copyAmountBtn) {
         copyAmountBtn.addEventListener('click', () => {
-            copyToClipboard(config.amount, `Amount ₹${config.amount} copied!`);
+            const formatted = isNaN(Number(currentConfig.amount)) ? currentConfig.amount : Number(currentConfig.amount).toLocaleString('en-IN');
+            copyToClipboard(currentConfig.amount, `Amount ₹${formatted} copied!`);
         });
     }
 
     if (copyUpiBtn) {
         copyUpiBtn.addEventListener('click', () => {
-            copyToClipboard(config.upiId, 'UPI ID copied to clipboard!');
+            copyToClipboard(currentConfig.upiId, 'UPI ID copied to clipboard!');
         });
     }
 
-    // 7. "I've Completed Payment" Action Listener
+    // Completion Button Handler
     if (btnCompleted) {
         btnCompleted.addEventListener('click', (e) => {
-            if (config.completionUrl && config.completionUrl.startsWith('http')) {
-                // If custom URL (e.g. Tally form return URL) specified in config or query param ?next=...
-                window.location.href = config.completionUrl;
+            if (currentConfig.completionUrl && currentConfig.completionUrl.startsWith('http')) {
+                window.location.href = currentConfig.completionUrl;
             } else {
-                // Open default completion instruction modal
                 e.preventDefault();
                 if (completionModal) completionModal.classList.add('active');
             }
@@ -152,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
             completionModal.classList.remove('active');
         });
 
-        // Close on backdrop click
         completionModal.addEventListener('click', (e) => {
             if (e.target === completionModal) {
                 completionModal.classList.remove('active');
@@ -161,8 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Mobile device detector
-     * @returns {boolean} True if user is on mobile browser
+     * Mobile device check
+     * @returns {boolean}
      */
     function checkIsMobile() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -171,9 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Copy text to clipboard with toast notification feedback
-     * @param {string} text 
-     * @param {string} successMsg 
+     * Copy helper function
      */
     function copyToClipboard(text, successMsg) {
         if (navigator.clipboard && window.isSecureContext) {
@@ -187,9 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Legacy copy fallback for non-HTTPS environments
-     */
     function fallbackCopy(text, successMsg) {
         const textArea = document.createElement('textarea');
         textArea.value = text;
@@ -207,10 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(textArea);
     }
 
-    /**
-     * Display toast notification at screen bottom
-     * @param {string} msg 
-     */
     let toastTimeout;
     function showToast(msg) {
         if (!toast || !toastMessage) return;

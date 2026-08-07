@@ -84,7 +84,7 @@
 
                 <!-- Interactive Ticket Selection Tabs (Segmented Control) -->
                 <div class="ticket-selector-container">
-                    <span class="selector-label">Select Pass</span>
+                    <span class="selector-label">Select Registration Pass</span>
                     <div class="ticket-tabs" role="tablist" aria-label="Ticket Types">
                         <button type="button" class="ticket-tab active" data-ticket="solo" role="tab" aria-selected="true">
                             <span class="tab-title">Solo Pass</span>
@@ -123,19 +123,45 @@
                     </div>
                 </div>
 
-                <!-- Desktop Device Banner (Shown on Desktop Browsers) -->
+                <!-- Razorpay-Style Payment Launch Section -->
+                <div class="upi-launch-box">
+                    <!-- Primary Open Any UPI App Button -->
+                    <a id="btnOpenUpi" href="#" class="btn-primary-pay">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        Pay via Any UPI App
+                    </a>
+
+                    <!-- Specific App Direct Selectors -->
+                    <div class="app-grid-header">Or select installed app directly</div>
+                    <div class="upi-app-grid">
+                        <a id="appGPay" href="#" class="upi-app-chip">
+                            <span class="app-icon gpay-bg">GPay</span>
+                            <span class="app-label">Google Pay</span>
+                        </a>
+                        <a id="appPhonePe" href="#" class="upi-app-chip">
+                            <span class="app-icon phonepe-bg">Pe</span>
+                            <span class="app-label">PhonePe</span>
+                        </a>
+                        <a id="appPaytm" href="#" class="upi-app-chip">
+                            <span class="app-icon paytm-bg">Paytm</span>
+                            <span class="app-label">Paytm</span>
+                        </a>
+                        <a id="appBhim" href="#" class="upi-app-chip">
+                            <span class="app-icon bhim-bg">BHIM</span>
+                            <span class="app-label">BHIM / Cred</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Device Notice (Shown on Desktop Browsers) -->
                 <div id="desktopNotice" class="desktop-banner hidden" role="note">
                     <span class="desktop-banner-icon">📱</span>
                     <div>
                         <strong>UPI payments work best on a mobile device.</strong><br>
                         Scan the QR code below using any UPI app (Google Pay, PhonePe, Paytm, BHIM, etc.) to complete your payment.
                     </div>
-                </div>
-
-                <!-- Mobile Auto-Redirect Loading State -->
-                <div id="redirectLoadingBox" class="redirect-loading-box">
-                    <div class="spinner" aria-hidden="true"></div>
-                    <span class="redirect-text">Opening your UPI app...</span>
                 </div>
 
                 <!-- Payment Details List -->
@@ -162,21 +188,9 @@
                     </div>
                 </div>
 
-                <!-- Fallback & QR Code Section -->
-                <div id="fallbackSection" class="fallback-section hidden">
-                    <p class="fallback-title">Couldn't open your UPI app?</p>
-
-                    <!-- Manual Open Button -->
-                    <a id="btnOpenUpi" href="#" class="btn-primary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                        Open UPI App
-                    </a>
-
-                    <div class="divider">OR</div>
+                <!-- Dynamic QR Code & Manual Fallback Section -->
+                <div class="qr-fallback-section">
+                    <div class="divider">SCAN QR CODE</div>
 
                     <!-- Dynamic Frosted QR Code Container -->
                     <div class="qr-container-wrapper">
