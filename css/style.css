@@ -513,69 +513,37 @@ body::after {
 .upi-app-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    gap: 10px;
     width: 100%;
 }
 
 .upi-app-chip {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 10px 4px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 12px 8px;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(59, 45, 37, 0.04);
 }
 
 .upi-app-chip:hover {
     background: #FFFFFF;
     border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 45, 37, 0.08);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(59, 45, 37, 0.14);
 }
 
 .upi-app-chip:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.97);
 }
 
-.app-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: #FFFFFF;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.gpay-bg {
-    background: linear-gradient(135deg, #4285F4 0%, #34A853 50%, #FBBC05 100%);
-}
-
-.phonepe-bg {
-    background: #5F259F;
-}
-
-.paytm-bg {
-    background: #00BAF2;
-}
-
-.bhim-bg {
-    background: linear-gradient(135deg, #FF6F00 0%, #008A44 100%);
-}
-
-.app-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    text-align: center;
+.upi-app-chip svg {
+    display: block;
+    flex-shrink: 0;
 }
 
 /* Desktop Banner Notice */

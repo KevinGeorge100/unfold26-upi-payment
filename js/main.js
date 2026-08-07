@@ -101,18 +101,18 @@ function renderPaymentDetails(cfg) {
         };
     }
 
-    // Update Specific App Handoff Buttons
+    // Update Specific App Handoff Buttons (Google Pay, Super.money, Slice, BHIM)
     if (appGPay) {
         appGPay.href = appLinks.gpay;
         appGPay.onclick = function(e) { e.preventDefault(); tryLaunchApp(appLinks.gpay, appLinks.any); };
     }
-    if (appPhonePe) {
-        appPhonePe.href = appLinks.phonepe;
-        appPhonePe.onclick = function(e) { e.preventDefault(); tryLaunchApp(appLinks.phonepe, appLinks.any); };
+    if (appSuperMoney) {
+        appSuperMoney.href = appLinks.supermoney;
+        appSuperMoney.onclick = function(e) { e.preventDefault(); tryLaunchApp(appLinks.supermoney, appLinks.any); };
     }
-    if (appPaytm) {
-        appPaytm.href = appLinks.paytm;
-        appPaytm.onclick = function(e) { e.preventDefault(); tryLaunchApp(appLinks.paytm, appLinks.any); };
+    if (appSlice) {
+        appSlice.href = appLinks.slice;
+        appSlice.onclick = function(e) { e.preventDefault(); tryLaunchApp(appLinks.slice, appLinks.any); };
     }
     if (appBhim) {
         appBhim.href = appLinks.bhim;
@@ -145,8 +145,8 @@ function buildAppDeepLinks(baseUri) {
     return {
         any: baseUri,
         gpay: `gpay://upi/pay?${rawParams}`,
-        phonepe: `phonepe://pay?${rawParams}`,
-        paytm: `paytmmp://pay?${rawParams}`,
+        supermoney: `supermoney://pay?${rawParams}`,
+        slice: `slice://pay?${rawParams}`,
         bhim: baseUri
     };
 }
