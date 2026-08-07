@@ -173,14 +173,15 @@ function escapeHtml(str) {
 
 /**
  * Builds a universally-compatible UPI Deep Link URL.
- * Format: upi://pay?pa=...&pn=...&am=...&cu=INR&tn=...
+ * Format: upi://pay?pa=8281651978@slc&am=799&cu=INR&tn=UNFOLD2026
  *
- * Encoding rules (tested across BHIM, GPay, PhonePe, Paytm, Slice, Super.money):
- *  - pa (UPI ID):  Keep '@' unencoded. encodeURIComponent('%40') breaks BHIM display.
- *  - pn (name):    Use '+' for spaces, not '%20'. Apps decode '+' correctly as a space.
- *  - am (amount):  Raw numeric string. No encoding needed.
- *  - cu:           Raw 'INR'. No encoding needed.
- *  - tn (note):    Same as pn — use '+' for spaces.
+ * Universal compatibility rules for NPCI UPI apps (BHIM, GPay, PhonePe, Paytm, Slice, Super.money):
+ *  1. Omit `pn` (payee name): UPI apps automatically perform a VPA lookup to fetch
+ *     the verified account holder name from the bank. Passing hardcoded `pn` strings
+ *     causes GPay/BHIM to show `%20`/`+` formatting artifacts or grey out BHIM's "Next" button.
+ *  2. Keep `pa` (UPI ID) raw with '@' unencoded.
+ *  3. Keep `am` (amount) as a raw numeric string.
+ *  4. Keep `tn` (transaction note) as a clean alphanumeric string (e.g. UNFOLD2026) without spaces.
  *
  * @param {Object} config Optional custom config
  * @returns {string} Universally-compatible UPI Deep Link
@@ -188,18 +189,12 @@ function escapeHtml(str) {
 function getUpiDeepLink(config) {
     const cfg = config || getActiveConfig();
 
-    // Helper: encode a text field for UPI — percent-encode special chars but use + for spaces
-    function upiEncode(str) {
-        return encodeURIComponent(String(str)).replace(/%20/g, '+');
-    }
-
-    const pa = cfg.upiId;                        // Raw: keep '@' as-is
-    const pn = upiEncode(cfg.payeeName);          // e.g. "KEVIN GEORGE" → "KEVIN+GEORGE"
-    const am = String(cfg.amount);                // Raw numeric: "799"
+    const pa = cfg.upiId;                                     // Raw VPA: "8281651978@slc"
+    const am = String(cfg.amount);                             // Numeric string: e.g. "799"
     const cu = 'INR';
-    const tn = upiEncode(cfg.transactionNote);    // e.g. "UNFOLD 2026" → "UNFOLD+2026"
+    const tn = (cfg.transactionNote || 'UNFOLD2026').replace(/\s+/g, ''); // Clean note: e.g. "UNFOLD2026"
 
-    return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=${cu}&tn=${tn}`;
+    return `upi://pay?pa=${pa}&am=${am}&cu=${cu}&tn=${tn}`;
 }
 
 // Export for module environments if present
