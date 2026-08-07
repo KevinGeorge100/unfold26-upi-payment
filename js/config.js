@@ -179,14 +179,16 @@ function escapeHtml(str) {
  */
 function getUpiDeepLink(config) {
     const cfg = config || getActiveConfig();
-    const params = new URLSearchParams({
-        pa: cfg.upiId,
-        pn: cfg.payeeName,
-        am: cfg.amount,
-        cu: 'INR',
-        tn: cfg.transactionNote
-    });
-    return `upi://pay?${params.toString()}`;
+    // Manually build UPI deep link to avoid URL-encoding the '@' in the UPI ID (pa).
+    // URLSearchParams encodes '@' as '%40', which BHIM and some UPI apps display
+    // literally instead of decoding it — resulting in "8281651978%40slc" on screen.
+    // The UPI deep link spec allows '@' to remain unencoded in the pa field.
+    const pa = cfg.upiId; // Keep '@' raw — do NOT use encodeURIComponent here
+    const pn = encodeURIComponent(cfg.payeeName);
+    const am = encodeURIComponent(cfg.amount);
+    const cu = 'INR';
+    const tn = encodeURIComponent(cfg.transactionNote);
+    return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=${cu}&tn=${tn}`;
 }
 
 // Export for module environments if present
