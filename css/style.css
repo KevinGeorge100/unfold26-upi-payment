@@ -353,6 +353,26 @@ body::after {
     font-weight: 800;
 }
 
+/* Locked Pass Tabs when opened from Tally */
+.ticket-tab.locked-inactive {
+    opacity: 0.35 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    filter: grayscale(0.8);
+    background: rgba(230, 230, 230, 0.4) !important;
+    border-color: rgba(200, 200, 200, 0.3) !important;
+}
+
+.ticket-tab.locked-active {
+    cursor: default !important;
+    border-color: var(--primary-color) !important;
+}
+
+.selected-badge-indicator.badge-locked {
+    background: rgba(184, 75, 41, 0.12) !important;
+    color: #B84B29 !important;
+}
+
 /* Active Checkmark Badge on Tab */
 .tab-check-icon {
     position: absolute;

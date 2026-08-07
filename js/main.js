@@ -10,6 +10,12 @@ let currentConfig = getActiveConfig();
  * @param {string} key Ticket key ('solo' | 'duo' | 'trio' | 'team4')
  */
 window.switchTicket = function(key) {
+    // Prevent switching if pass is locked via Tally parameter
+    if (currentConfig && currentConfig.isLocked) {
+        showToast('Pass locked based on your Tally selection');
+        return;
+    }
+
     if (!key || typeof TICKET_TIERS === 'undefined' || !TICKET_TIERS[key]) {
         console.warn('Invalid ticket key:', key);
         return;
@@ -64,14 +70,44 @@ function renderPaymentDetails(cfg) {
     const btnOpenUpi = document.getElementById('btnOpenUpi');
     const btnStickyPay = document.getElementById('btnStickyPay');
     const ticketTabs = document.querySelectorAll('.ticket-tab');
-    const ticketSelectorCard = document.querySelector('.ticket-selector-card');
+    const selectorLabelRow = document.querySelector('.selector-label-row');
 
-    // Option A: Single Pass Lock Mode (Hide multi-pass selector bar when linked from Tally)
-    if (ticketSelectorCard) {
-        if (cfg.isLocked) {
-            ticketSelectorCard.style.display = 'none';
-        } else {
-            ticketSelectorCard.style.display = 'block';
+    // Handle Locked Pass Tabs when linked from Tally
+    if (ticketTabs) {
+        ticketTabs.forEach(tab => {
+            const key = tab.getAttribute('data-ticket');
+            const isSelected = (key === cfg.ticketKey);
+            
+            tab.classList.toggle('active', isSelected);
+            tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+
+            if (cfg.isLocked) {
+                if (isSelected) {
+                    tab.classList.remove('locked-inactive');
+                    tab.classList.add('locked-active');
+                    tab.removeAttribute('disabled');
+                } else {
+                    tab.classList.add('locked-inactive');
+                    tab.classList.remove('locked-active');
+                    tab.setAttribute('disabled', 'true');
+                }
+            } else {
+                tab.classList.remove('locked-inactive', 'locked-active');
+                tab.removeAttribute('disabled');
+            }
+        });
+    }
+
+    if (selectorLabelRow) {
+        const badgeEl = selectorLabelRow.querySelector('.selected-badge-indicator');
+        if (badgeEl) {
+            if (cfg.isLocked) {
+                badgeEl.innerHTML = `🔒 Locked from Tally`;
+                badgeEl.classList.add('badge-locked');
+            } else {
+                badgeEl.innerHTML = `✓ Selected`;
+                badgeEl.classList.remove('badge-locked');
+            }
         }
     }
 
@@ -104,16 +140,6 @@ function renderPaymentDetails(cfg) {
     // Update Document Title
     if (cfg.ticketLabel && cfg.ticketLabel !== 'Standard Registration') {
         document.title = `UNFOLD 2026 Payment - ${cfg.ticketLabel}`;
-    }
-
-    // Update Active Tab Highlight
-    if (ticketTabs) {
-        ticketTabs.forEach(tab => {
-            const key = tab.getAttribute('data-ticket');
-            const isSelected = (key === cfg.ticketKey);
-            tab.classList.toggle('active', isSelected);
-            tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-        });
     }
 }
 
