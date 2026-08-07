@@ -172,22 +172,33 @@ function escapeHtml(str) {
 }
 
 /**
- * Builds standard UPI Deep Link URL
+ * Builds a universally-compatible UPI Deep Link URL.
  * Format: upi://pay?pa=...&pn=...&am=...&cu=INR&tn=...
+ *
+ * Encoding rules (tested across BHIM, GPay, PhonePe, Paytm, Slice, Super.money):
+ *  - pa (UPI ID):  Keep '@' unencoded. encodeURIComponent('%40') breaks BHIM display.
+ *  - pn (name):    Use '+' for spaces, not '%20'. Apps decode '+' correctly as a space.
+ *  - am (amount):  Raw numeric string. No encoding needed.
+ *  - cu:           Raw 'INR'. No encoding needed.
+ *  - tn (note):    Same as pn — use '+' for spaces.
+ *
  * @param {Object} config Optional custom config
- * @returns {string} Fully encoded UPI Deep Link
+ * @returns {string} Universally-compatible UPI Deep Link
  */
 function getUpiDeepLink(config) {
     const cfg = config || getActiveConfig();
-    // Manually build UPI deep link to avoid URL-encoding the '@' in the UPI ID (pa).
-    // URLSearchParams encodes '@' as '%40', which BHIM and some UPI apps display
-    // literally instead of decoding it — resulting in "8281651978%40slc" on screen.
-    // The UPI deep link spec allows '@' to remain unencoded in the pa field.
-    const pa = cfg.upiId; // Keep '@' raw — do NOT use encodeURIComponent here
-    const pn = encodeURIComponent(cfg.payeeName);
-    const am = encodeURIComponent(cfg.amount);
+
+    // Helper: encode a text field for UPI — percent-encode special chars but use + for spaces
+    function upiEncode(str) {
+        return encodeURIComponent(String(str)).replace(/%20/g, '+');
+    }
+
+    const pa = cfg.upiId;                        // Raw: keep '@' as-is
+    const pn = upiEncode(cfg.payeeName);          // e.g. "KEVIN GEORGE" → "KEVIN+GEORGE"
+    const am = String(cfg.amount);                // Raw numeric: "799"
     const cu = 'INR';
-    const tn = encodeURIComponent(cfg.transactionNote);
+    const tn = upiEncode(cfg.transactionNote);    // e.g. "UNFOLD 2026" → "UNFOLD+2026"
+
     return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=${cu}&tn=${tn}`;
 }
 
