@@ -101,13 +101,8 @@ function renderPaymentDetails(cfg) {
     if (selectorLabelRow) {
         const badgeEl = selectorLabelRow.querySelector('.selected-badge-indicator');
         if (badgeEl) {
-            if (cfg.isLocked) {
-                badgeEl.innerHTML = `🔒 Locked from Tally`;
-                badgeEl.classList.add('badge-locked');
-            } else {
-                badgeEl.innerHTML = `✓ Selected`;
-                badgeEl.classList.remove('badge-locked');
-            }
+            badgeEl.innerHTML = `✓ Selected`;
+            badgeEl.classList.remove('badge-locked');
         }
     }
 
