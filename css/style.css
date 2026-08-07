@@ -98,15 +98,9 @@ body::before {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px 16px 110px 16px;
+    padding: 40px 16px;
     position: relative;
     z-index: 1;
-}
-
-@media (min-width: 768px) {
-    .page-container {
-        padding-bottom: 50px;
-    }
 }
 
 .main-wrapper {

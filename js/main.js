@@ -62,13 +62,10 @@ function renderPaymentDetails(cfg) {
 
     // Select DOM Elements
     const amountValEl = document.getElementById('amountVal');
-    const stickyAmountValEl = document.getElementById('stickyAmountVal');
     const payeeValEl = document.getElementById('payeeVal');
     const upiIdValEl = document.getElementById('upiIdVal');
     const ticketLabelEl = document.getElementById('ticketLabel');
     const ticketSummaryNoteEl = document.getElementById('ticketSummaryNote');
-    const btnOpenUpi = document.getElementById('btnOpenUpi');
-    const btnStickyPay = document.getElementById('btnStickyPay');
     const ticketTabs = document.querySelectorAll('.ticket-tab');
     const selectorLabelRow = document.querySelector('.selector-label-row');
 
@@ -109,28 +106,10 @@ function renderPaymentDetails(cfg) {
     // Update Amount & Text Details
     const formattedAmount = isNaN(Number(cfg.amount)) ? cfg.amount : Number(cfg.amount).toLocaleString('en-IN');
     if (amountValEl) amountValEl.textContent = `₹${formattedAmount}`;
-    if (stickyAmountValEl) stickyAmountValEl.textContent = `₹${formattedAmount}`;
     if (payeeValEl) payeeValEl.textContent = cfg.payeeName;
     if (upiIdValEl) upiIdValEl.textContent = cfg.upiId;
     if (ticketLabelEl) ticketLabelEl.textContent = cfg.ticketLabel || cfg.name || 'Solo Pass';
     if (ticketSummaryNoteEl) ticketSummaryNoteEl.textContent = cfg.ticketDescription || 'Includes registration & full bootcamp access';
-
-    // 1. Primary Any UPI App Buttons
-    if (btnOpenUpi) {
-        btnOpenUpi.href = appLinks.any;
-        btnOpenUpi.onclick = function(e) {
-            e.preventDefault();
-            launchUpiLink(appLinks.any);
-        };
-    }
-
-    if (btnStickyPay) {
-        btnStickyPay.href = appLinks.any;
-        btnStickyPay.onclick = function(e) {
-            e.preventDefault();
-            launchUpiLink(appLinks.any);
-        };
-    }
 
     // Update Document Title
     if (cfg.ticketLabel && cfg.ticketLabel !== 'Standard Registration') {
