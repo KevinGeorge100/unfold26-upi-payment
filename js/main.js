@@ -71,7 +71,34 @@ function renderPaymentDetails(cfg) {
     const ticketTabs = document.querySelectorAll('.ticket-tab');
     const selectorLabelRow = document.querySelector('.selector-label-row');
 
-    // Handle Locked Pass Tabs when linked or selected from Tally
+    if (payeeValEl) payeeValEl.textContent = cfg.payeeName;
+    if (upiIdValEl) upiIdValEl.textContent = cfg.upiId;
+
+    // Handle Unselected Initial State
+    if (!cfg.ticketKey) {
+        if (amountValEl) amountValEl.textContent = 'Select Pass';
+        if (ticketLabelEl) ticketLabelEl.textContent = 'Select Pass';
+        if (ticketSummaryNoteEl) ticketSummaryNoteEl.textContent = 'Complete Step 1 (Registration Form) above or select your pass below';
+        
+        if (selectorLabelRow) {
+            const badgeEl = selectorLabelRow.querySelector('.selected-badge-indicator');
+            if (badgeEl) {
+                badgeEl.innerHTML = `Select Registration Pass`;
+                badgeEl.classList.remove('badge-locked');
+            }
+        }
+
+        if (ticketTabs) {
+            ticketTabs.forEach(tab => {
+                tab.classList.remove('active', 'locked-inactive', 'locked-active');
+                tab.setAttribute('aria-selected', 'false');
+                tab.removeAttribute('disabled');
+            });
+        }
+        return;
+    }
+
+    // Handle Locked / Selected Pass Tabs when linked or selected
     if (ticketTabs) {
         ticketTabs.forEach(tab => {
             const key = tab.getAttribute('data-ticket');
@@ -113,8 +140,6 @@ function renderPaymentDetails(cfg) {
     // Update Amount & Text Details
     const formattedAmount = isNaN(Number(cfg.amount)) ? cfg.amount : Number(cfg.amount).toLocaleString('en-IN');
     if (amountValEl) amountValEl.textContent = `₹${formattedAmount}`;
-    if (payeeValEl) payeeValEl.textContent = cfg.payeeName;
-    if (upiIdValEl) upiIdValEl.textContent = cfg.upiId;
     if (ticketLabelEl) ticketLabelEl.textContent = cfg.ticketLabel || cfg.name || 'Solo Pass';
     if (ticketSummaryNoteEl) ticketSummaryNoteEl.textContent = cfg.ticketDescription || 'Includes registration & full bootcamp access';
 
@@ -317,7 +342,7 @@ window.addEventListener('message', (event) => {
 });
 
 /**
- * Parses Tally payload strings to extract Registration Category
+ * Parses Tally payload strings or objects to extract Registration Category
  * @param {string} str Raw payload JSON or string
  * @returns {string|null} Canonical ticket key ('solo'|'duo'|'trio'|'team4')
  */
@@ -325,20 +350,42 @@ function detectPassFromPayload(str) {
     if (!str || typeof str !== 'string') return null;
     const lower = str.toLowerCase();
 
-    // Check Team of 4
-    if (lower.includes('team of 4') || lower.includes('4 member') || lower.includes('4 participant') || lower.includes('team4') || lower.includes('quad')) {
+    // 1. Check Team of 4 / Quad / 4
+    if (
+        lower.includes('team of 4') || lower.includes('team of four') || 
+        lower.includes('4 members') || lower.includes('4 member') || 
+        lower.includes('4 participants') || lower.includes('4 participant') || 
+        lower.includes('team4') || lower.includes('quad')
+    ) {
         return 'team4';
     }
-    // Check Team of 3
-    if (lower.includes('team of 3') || lower.includes('3 member') || lower.includes('3 participant') || lower.includes('team3') || lower.includes('trio')) {
+
+    // 2. Check Team of 3 / Trio / 3
+    if (
+        lower.includes('team of 3') || lower.includes('team of three') || 
+        lower.includes('3 members') || lower.includes('3 member') || 
+        lower.includes('3 participants') || lower.includes('3 participant') || 
+        lower.includes('team3') || lower.includes('trio')
+    ) {
         return 'trio';
     }
-    // Check Team of 2
-    if (lower.includes('team of 2') || lower.includes('2 member') || lower.includes('2 participant') || lower.includes('team2') || lower.includes('duo')) {
+
+    // 3. Check Team of 2 / Duo / 2
+    if (
+        lower.includes('team of 2') || lower.includes('team of two') || 
+        lower.includes('2 members') || lower.includes('2 member') || 
+        lower.includes('2 participants') || lower.includes('2 participant') || 
+        lower.includes('team2') || lower.includes('duo')
+    ) {
         return 'duo';
     }
-    // Check Solo
-    if (lower.includes('solo') || lower.includes('individual') || lower.includes('1 member') || lower.includes('1 participant') || lower.includes('solo pass')) {
+
+    // 4. Check Solo / 1
+    if (
+        lower.includes('solo') || lower.includes('individual') || 
+        lower.includes('1 member') || lower.includes('1 participant') || 
+        lower.includes('solo pass') || lower.includes('single')
+    ) {
         return 'solo';
     }
 

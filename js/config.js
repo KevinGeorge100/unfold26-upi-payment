@@ -127,10 +127,13 @@ function getActiveConfig() {
         active.ticketLabel = tier.name || tier.label;
         active.ticketDescription = tier.description;
         active.transactionNote = tier.note;
-        active.ticketKey = TICKET_KEY_MAP[key] || 'solo';
-        active.isLocked = true; // Auto-lock mode when loaded from Tally embed
+        active.ticketKey = TICKET_KEY_MAP[key] || key;
+        active.isLocked = true; // Auto-lock mode when preset in URL
     } else {
-        active.ticketKey = 'solo';
+        active.amount = null;
+        active.ticketLabel = 'Select Pass';
+        active.ticketDescription = 'Complete Step 1 (Registration Form) above or select your pass below';
+        active.ticketKey = null;
         active.isLocked = false;
     }
 
