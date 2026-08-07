@@ -1,75 +1,67 @@
 /* ==========================================================================
-   UNFOLD 2026 - Ultra-Premium IEEE Master Fintech Payment Interface
-   Designed for IEEE IA/IE/PELS Jt. Chapter Kerala
-   Palette: Warm Cream (#F7F4EE) • Dark Espresso (#3B2D25) • Translucent Glass
+   UNFOLD 2026 - Dilocash Luxury Gold & Charcoal Gunmetal UI Template
+   Inspired by: Dilocash Digital Payment Solution
+   Colors: Dark Gunmetal (#121214) • Champagne Gold (#E5C158) • Matte Glass
+   All existing content, copy, text, links, logos, and functionality are 100% preserved.
    ========================================================================== */
 
-:root {
-    /* Color System - Warm Luxury Palette */
-    --primary-color: #3B2D25;
-    /* Earthy Dark Espresso */
-    --primary-hover: #251B16;
-    /* Deep Charcoal Espresso */
-    --primary-light: rgba(244, 239, 234, 0.85);
-    /* Translucent Cream */
-    --primary-accent: #8C7261;
-    /* Warm Metallic Bronze Accent */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 
-    /* Glassmorphism Tokens */
-    --glass-bg: rgba(255, 255, 255, 0.82);
-    --glass-bg-hover: rgba(255, 255, 255, 0.95);
-    --glass-border: rgba(255, 255, 255, 0.95);
-    --glass-border-subtle: rgba(216, 200, 184, 0.5);
+:root {
+    /* Dilocash Color System */
+    --primary-color: #121214;       /* Deep Charcoal Gunmetal Canvas */
+    --primary-hover: #1A1A1E;       /* Elevated Gunmetal */
+    --primary-light: rgba(229, 193, 88, 0.12); /* Soft Gold Glow Tint */
+    --gold-accent: #E5C158;         /* Dilocash Champagne Gold */
+    --gold-accent-hover: #D4AF37;   /* Metallic Rich Gold */
+    --gold-gradient: linear-gradient(135deg, #F3D270 0%, #E5C158 100%);
+    --gold-border: rgba(229, 193, 88, 0.35);
+    
+    /* Glassmorphism & Surface Tokens */
+    --glass-bg: rgba(24, 24, 28, 0.88);
+    --glass-bg-hover: rgba(32, 32, 38, 0.95);
+    --glass-border: rgba(229, 193, 88, 0.22);
+    --glass-border-subtle: rgba(255, 255, 255, 0.08);
     --glass-blur: blur(24px) saturate(190%);
 
     /* Base Palette */
-    --bg-page: #F7F4EE;
-    /* Canvas Background */
-    --text-primary: #2C221C;
-    /* Deep Slate Brown */
-    --text-secondary: #5F5046;
-    /* Muted Slate Brown */
-    --text-tertiary: #98887C;
-    /* Soft Taupe */
-    --border-color: rgba(214, 201, 189, 0.6);
-
+    --bg-page: #121214;             /* Dilocash Dark Gunmetal Background */
+    --text-primary: #FAFAFA;        /* Crisp High-Contrast White */
+    --text-secondary: #A1A1AA;      /* Muted Cool Slate Grey */
+    --text-tertiary: #71717A;       /* Silver Taupe */
+    --border-color: rgba(255, 255, 255, 0.12);
+    
     /* Trust & State Colors */
-    --success-color: #10B981;
-    /* Emerald Success */
-    --success-bg: rgba(16, 185, 129, 0.12);
-    --warning-bg: rgba(254, 243, 199, 0.75);
-    --warning-border: rgba(245, 158, 11, 0.4);
+    --success-color: #10B981;       /* Emerald Success */
+    --success-bg: rgba(16, 185, 129, 0.15);
+    --warning-bg: rgba(254, 243, 199, 0.95);
+    --warning-border: rgba(245, 158, 11, 0.5);
     --warning-text: #78350F;
 
     /* Typography & Radius */
-    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --radius-xl: 24px;
-    --radius-lg: 16px;
-    --radius-md: 12px;
+    --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    --radius-xl: 20px;
+    --radius-lg: 14px;
+    --radius-md: 10px;
     --radius-full: 9999px;
 
-    /* Soft UI & Elevation Shadows */
-    --shadow-glass: 0 20px 50px -10px rgba(59, 45, 37, 0.1),
-        0 10px 20px -5px rgba(0, 0, 0, 0.03),
-        inset 0 1px 1px rgba(255, 255, 255, 0.95),
-        inset 0 -1px 2px rgba(59, 45, 37, 0.03);
-    --shadow-button: 0 10px 26px -4px rgba(59, 45, 37, 0.35),
-        0 3px 8px -1px rgba(59, 45, 37, 0.2);
-    --shadow-tab: 0 4px 14px rgba(59, 45, 37, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    --shadow-toast: 0 20px 40px -8px rgba(44, 34, 28, 0.35);
+    /* Soft Dilocash Elevation & Glow Shadows */
+    --shadow-glass: 0 24px 60px -10px rgba(0, 0, 0, 0.65), 
+                    0 0 1px rgba(229, 193, 88, 0.3),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    --shadow-button: 0 10px 28px -4px rgba(229, 193, 88, 0.4),
+                    0 4px 10px rgba(0, 0, 0, 0.3);
+    --shadow-toast: 0 20px 40px -8px rgba(0, 0, 0, 0.7);
 }
 
 /* Reset & Smooth Scroll */
-*,
-*::before,
-*::after {
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-html,
-body {
+html, body {
     min-height: 100%;
     font-family: var(--font-family);
     background-color: var(--bg-page);
@@ -83,40 +75,39 @@ body {
 
 /* Accessibility Visible Focus Outlines */
 :focus-visible {
-    outline: 2.5px solid var(--primary-color);
+    outline: 2.5px solid var(--gold-accent);
     outline-offset: 3px;
     border-radius: 6px;
 }
 
-/* Ambient Radial Glow Background */
+/* Dilocash Ambient Warm Gold Radial Glow Canvas */
 body::before {
     content: '';
     position: fixed;
     top: -10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 650px;
-    height: 650px;
-    background: radial-gradient(circle, rgba(216, 200, 184, 0.45) 0%, rgba(247, 244, 238, 0) 70%);
+    right: -10%;
+    width: 750px;
+    height: 750px;
+    background: radial-gradient(ellipse at 70% 30%, rgba(229, 193, 88, 0.18) 0%, rgba(18, 18, 20, 0) 70%);
     z-index: 0;
     pointer-events: none;
-    filter: blur(40px);
+    filter: blur(50px);
 }
 
 body::after {
     content: '';
     position: fixed;
     bottom: -15%;
-    right: -10%;
-    width: 550px;
-    height: 550px;
-    background: radial-gradient(circle, rgba(235, 223, 210, 0.35) 0%, rgba(247, 244, 238, 0) 70%);
+    left: -10%;
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(18, 18, 20, 0) 70%);
     z-index: 0;
     pointer-events: none;
-    filter: blur(50px);
+    filter: blur(60px);
 }
 
-/* Page Layout - Centered Vertically */
+/* Page Layout Container */
 .page-container {
     min-height: 100vh;
     display: flex;
@@ -124,7 +115,6 @@ body::after {
     justify-content: center;
     align-items: center;
     padding: 40px 16px 110px 16px;
-    /* Extra bottom padding for sticky bar on mobile */
     position: relative;
     z-index: 1;
 }
@@ -140,11 +130,11 @@ body::after {
     max-width: 460px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 22px;
     align-items: center;
 }
 
-/* Header Section & Branding System */
+/* Header Section & Dilocash Gold Branding */
 .header-section {
     text-align: center;
     display: flex;
@@ -156,22 +146,21 @@ body::after {
 
 .logo-banner-container {
     background: #FFFFFF;
-    padding: 10px 16px;
+    padding: 12px 18px;
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 18px rgba(59, 45, 37, 0.07);
+    border: 1px solid var(--gold-border);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     max-width: 420px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(10px);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .logo-banner-container:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(59, 45, 37, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(229, 193, 88, 0.25);
 }
 
 .chapter-logo-img {
@@ -192,49 +181,48 @@ body::after {
 .header-title {
     font-size: 2.625rem;
     font-weight: 900;
-    color: var(--primary-color);
-    letter-spacing: -0.04em;
+    color: #FAFAFA;
+    letter-spacing: -0.03em;
     line-height: 1;
     text-transform: uppercase;
 }
 
 .header-tagline {
     font-size: 0.9375rem;
-    font-style: italic;
     color: var(--text-secondary);
     font-weight: 500;
     letter-spacing: 0.01em;
-    opacity: 0.9;
 }
 
-/* Event Metadata Glass Card */
+/* Event Metadata Dilocash Glass Card */
 .event-meta-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.65);
+    gap: 8px;
+    background: rgba(24, 24, 28, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--gold-border);
     border-radius: var(--radius-lg);
     padding: 12px 18px;
     width: 100%;
-    box-shadow: 0 4px 16px rgba(59, 45, 37, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .meta-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(59, 45, 37, 0.07);
-    color: var(--primary-color);
-    padding: 5px 14px;
+    background: rgba(229, 193, 88, 0.15);
+    color: var(--gold-accent);
+    padding: 4px 14px;
     border-radius: var(--radius-full);
     font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-weight: 800;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+    border: 1px solid rgba(229, 193, 88, 0.35);
 }
 
 .meta-details-row {
@@ -256,7 +244,7 @@ body::after {
 }
 
 .meta-detail-item svg {
-    color: var(--primary-color);
+    color: var(--gold-accent);
     flex-shrink: 0;
 }
 
@@ -265,7 +253,7 @@ body::after {
     font-size: 0.75rem;
 }
 
-/* Translucent Glassmorphism Payment Card */
+/* Dilocash Matte Glass Payment Card */
 .payment-card {
     width: 100%;
     background: var(--glass-bg);
@@ -278,10 +266,9 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 22px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Apple-Inspired Segmented Control (Ticket Selector Tabs) */
+/* Dilocash Gold Ticket Selector Control */
 .ticket-selector-container {
     display: flex;
     flex-direction: column;
@@ -297,7 +284,7 @@ body::after {
 
 .selector-label {
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-tertiary);
@@ -305,8 +292,8 @@ body::after {
 
 .selected-badge-indicator {
     font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--primary-color);
+    font-weight: 800;
+    color: var(--gold-accent);
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -317,11 +304,10 @@ body::after {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     width: 100%;
-    background: rgba(230, 222, 212, 0.55);
+    background: rgba(38, 38, 44, 0.8);
     padding: 6px;
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(214, 201, 189, 0.65);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 @media (min-width: 400px) {
@@ -336,61 +322,53 @@ body::after {
     align-items: center;
     justify-content: center;
     padding: 12px 6px;
-    background: rgba(255, 255, 255, 0.45);
-    border: 1.5px solid rgba(214, 201, 189, 0.5);
+    background: transparent;
+    border: 1.5px solid transparent;
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: center;
     user-select: none;
     position: relative;
-    opacity: 0.75;
+    opacity: 0.7;
 }
 
 .ticket-tab:hover {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.08);
     opacity: 0.95;
 }
 
 .ticket-tab.active {
-    background: #FFFFFF !important;
-    border: 2.5px solid var(--primary-color) !important;
-    box-shadow: 0 6px 18px rgba(59, 45, 37, 0.16) !important;
-    transform: translateY(-2px) scale(1.02);
+    background: var(--gold-gradient) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 6px 20px rgba(229, 193, 88, 0.4) !important;
+    transform: translateY(-2px);
     opacity: 1 !important;
 }
 
 .tab-title {
     font-size: 0.8125rem;
-    font-weight: 600;
+    font-weight: 800;
     color: var(--text-secondary);
     line-height: 1.2;
     pointer-events: none;
 }
 
 .ticket-tab.active .tab-title {
-    color: var(--primary-color);
-    font-weight: 800;
+    color: #121214 !important;
+    font-weight: 900;
 }
 
 /* Locked Pass Tabs when opened from Tally */
 .ticket-tab.locked-inactive {
-    opacity: 0.35 !important;
+    opacity: 0.25 !important;
     cursor: not-allowed !important;
     pointer-events: none !important;
-    filter: grayscale(0.8);
-    background: rgba(230, 230, 230, 0.4) !important;
-    border-color: rgba(200, 200, 200, 0.3) !important;
+    filter: grayscale(0.9);
 }
 
 .ticket-tab.locked-active {
     cursor: default !important;
-    border-color: var(--primary-color) !important;
-}
-
-.selected-badge-indicator.badge-locked {
-    background: rgba(184, 75, 41, 0.12) !important;
-    color: #B84B29 !important;
 }
 
 /* Active Checkmark Badge on Tab */
@@ -401,33 +379,33 @@ body::after {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: var(--primary-color);
-    color: #FFFFFF;
+    background: #121214;
+    color: var(--gold-accent);
     display: none;
     align-items: center;
     justify-content: center;
     font-size: 0.6875rem;
     font-weight: 900;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .ticket-tab.active .tab-check-icon {
     display: flex;
 }
 
-/* Stripe/Fintech Hero Amount Box */
+/* Dilocash Hero Amount Display */
 .hero-pay-box {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(244, 239, 234, 0.75) 100%);
-    border: 1px solid var(--glass-border);
+    background: rgba(38, 38, 44, 0.7);
+    border: 1px solid var(--gold-border);
     border-radius: var(--radius-lg);
     padding: 22px 18px;
     text-align: center;
     gap: 8px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 16px rgba(59, 45, 37, 0.04);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .pay-label-group {
@@ -438,21 +416,20 @@ body::after {
 
 .pay-tag {
     font-size: 0.75rem;
-    font-weight: 800;
+    font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    color: var(--primary-color);
+    color: var(--gold-accent);
 }
 
 .ticket-pill {
-    background: #FFFFFF;
-    color: var(--primary-color);
-    border: 1px solid var(--border-color);
+    background: rgba(229, 193, 88, 0.15);
+    color: var(--gold-accent);
+    border: 1px solid rgba(229, 193, 88, 0.3);
     padding: 3px 12px;
     border-radius: var(--radius-full);
     font-size: 0.75rem;
-    font-weight: 700;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    font-weight: 800;
 }
 
 .hero-amount-row {
@@ -462,9 +439,9 @@ body::after {
 }
 
 .hero-amount-val {
-    font-size: 2.75rem;
-    font-weight: 800;
-    color: var(--primary-color);
+    font-size: 2.875rem;
+    font-weight: 900;
+    color: #FAFAFA;
     letter-spacing: -0.04em;
     line-height: 1;
 }
@@ -475,13 +452,13 @@ body::after {
     color: var(--text-secondary);
     font-weight: 500;
     line-height: 1.35;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.04);
     padding: 6px 14px;
     border-radius: var(--radius-full);
-    border: 1px dashed var(--border-color);
+    border: 1px dashed rgba(229, 193, 88, 0.25);
 }
 
-/* Primary High-Impact CTA */
+/* Primary Dilocash Solid Gold Button */
 .upi-launch-box {
     display: flex;
     flex-direction: column;
@@ -495,13 +472,13 @@ body::after {
     align-items: center;
     justify-content: center;
     gap: 12px;
-    background: linear-gradient(135deg, #3B2D25 0%, #251B16 100%);
-    color: #FFFFFF;
+    background: var(--gold-gradient);
+    color: #121214;
     border: none;
-    padding: 17px 24px;
+    padding: 18px 24px;
     border-radius: var(--radius-lg);
     font-size: 1.0625rem;
-    font-weight: 800;
+    font-weight: 900;
     text-decoration: none;
     cursor: pointer;
     box-shadow: var(--shadow-button);
@@ -511,9 +488,9 @@ body::after {
 }
 
 .btn-primary-pay:hover {
-    background: linear-gradient(135deg, #2A1E18 0%, #1A120E 100%);
+    background: linear-gradient(135deg, #FFE285 0%, #F3D270 100%);
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px -4px rgba(59, 45, 37, 0.45);
+    box-shadow: 0 16px 36px -4px rgba(229, 193, 88, 0.55);
 }
 
 .btn-primary-pay:active {
@@ -525,7 +502,7 @@ body::after {
 }
 
 .btn-primary-pay:hover .cta-arrow-icon {
-    transform: translateX(4px);
+    transform: translateX(5px);
 }
 
 /* Desktop Banner Notice */
@@ -554,8 +531,8 @@ body::after {
     flex-direction: column;
     gap: 14px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid var(--border-color);
+    background: rgba(38, 38, 44, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-lg);
     padding: 16px;
 }
@@ -568,7 +545,7 @@ body::after {
 
 .detail-label {
     font-size: 0.6875rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-tertiary);
@@ -583,41 +560,39 @@ body::after {
 
 .detail-value {
     font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--text-primary);
+    font-weight: 700;
+    color: #FAFAFA;
     word-break: break-all;
 }
 
-/* Copy Icon Button */
+/* Dilocash Outlined Gold Copy Button */
 .btn-copy {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
+    background: rgba(229, 193, 88, 0.1);
+    border: 1px solid rgba(229, 193, 88, 0.5);
+    color: var(--gold-accent);
     padding: 6px 14px;
     border-radius: var(--radius-md);
     font-size: 0.8125rem;
-    font-weight: 600;
+    font-weight: 800;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .btn-copy:hover {
-    background: #FFFFFF;
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    background: rgba(229, 193, 88, 0.25);
+    border-color: var(--gold-accent);
+    color: #FFFFFF;
     transform: translateY(-1px);
 }
 
 .btn-copy.copied {
-    background: #D1FAE5;
-    color: #065F46;
-    border-color: #A7F3D0;
+    background: rgba(16, 185, 129, 0.25);
+    color: #34D399;
+    border-color: #10B981;
 }
 
 .btn-copy:active {
@@ -631,21 +606,21 @@ body::after {
     align-items: center;
     justify-content: center;
     gap: 12px;
-    background: #FFFFFF;
-    border: 2px solid rgba(214, 201, 189, 0.7);
-    padding: 14px 20px;
+    background: rgba(38, 38, 44, 0.7);
+    border: 2px solid rgba(229, 193, 88, 0.25);
+    padding: 15px 20px;
     border-radius: var(--radius-lg);
     cursor: pointer;
     margin-top: 16px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     user-select: none;
-    box-shadow: 0 4px 12px rgba(59, 45, 37, 0.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .completion-checkbox-card:hover {
-    border-color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 6px 16px rgba(184, 75, 41, 0.12);
+    border-color: var(--gold-accent);
+    background: rgba(38, 38, 44, 0.95);
+    box-shadow: 0 6px 20px rgba(229, 193, 88, 0.2);
     transform: translateY(-1px);
 }
 
@@ -662,13 +637,13 @@ body::after {
     height: 22px;
     min-width: 22px;
     border-radius: 6px;
-    border: 2px solid #C4B9AD;
-    background: #FAF8F5;
+    border: 2px solid rgba(229, 193, 88, 0.4);
+    background: rgba(18, 18, 20, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    color: #FFFFFF;
+    color: #121214;
 }
 
 .custom-checkbox-box svg {
@@ -677,35 +652,35 @@ body::after {
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.completion-checkbox-input:checked+.custom-checkbox-box {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    box-shadow: 0 2px 8px rgba(184, 75, 41, 0.35);
+.completion-checkbox-input:checked + .custom-checkbox-box {
+    background: var(--gold-accent);
+    border-color: var(--gold-accent);
+    box-shadow: 0 2px 10px rgba(229, 193, 88, 0.5);
 }
 
-.completion-checkbox-input:checked+.custom-checkbox-box svg {
+.completion-checkbox-input:checked + .custom-checkbox-box svg {
     opacity: 1;
     transform: scale(1);
 }
 
 .completion-checkbox-card:has(.completion-checkbox-input:checked) {
-    border-color: var(--primary-color);
-    background: rgba(184, 75, 41, 0.04);
+    border-color: var(--gold-accent);
+    background: rgba(229, 193, 88, 0.12);
 }
 
 .completion-checkbox-text {
     font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-weight: 800;
+    color: #FAFAFA;
 }
 
 /* Instructions Card Section */
 .instructions-card {
     width: 100%;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(24, 24, 28, 0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border-subtle);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-lg);
     padding: 20px;
     display: flex;
@@ -715,7 +690,7 @@ body::after {
 
 .instructions-title {
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-tertiary);
@@ -744,15 +719,15 @@ body::after {
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: var(--primary-light);
-    color: var(--primary-color);
+    background: rgba(229, 193, 88, 0.15);
+    color: var(--gold-accent);
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 800;
     flex-shrink: 0;
     margin-top: 1px;
 }
 
-/* Multi-Channel Support Footer */
+/* Support Footer */
 .footer-support-box {
     display: flex;
     flex-direction: column;
@@ -775,8 +750,8 @@ body::after {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255, 255, 255, 0.75);
-    border: 1px solid var(--border-color);
+    background: rgba(38, 38, 44, 0.7);
+    border: 1px solid rgba(229, 193, 88, 0.25);
     color: var(--text-secondary);
     padding: 6px 14px;
     border-radius: var(--radius-full);
@@ -787,9 +762,9 @@ body::after {
 }
 
 .support-link:hover {
-    background: #FFFFFF;
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+    background: rgba(38, 38, 44, 0.95);
+    color: #FFFFFF;
+    border-color: var(--gold-accent);
     transform: translateY(-1px);
 }
 
@@ -799,20 +774,20 @@ body::after {
     font-weight: 500;
 }
 
-/* Frosted Glass Toast Notification */
+/* Dilocash Toast Notification */
 .toast-container {
     position: fixed;
     bottom: 28px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: rgba(44, 34, 28, 0.94);
+    background: rgba(24, 24, 28, 0.95);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    color: #FFFFFF;
+    color: #FAFAFA;
     padding: 12px 22px;
     border-radius: var(--radius-full);
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -821,7 +796,7 @@ body::after {
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
     z-index: 1000;
     pointer-events: none;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--gold-border);
 }
 
 .toast-container.show {
@@ -833,23 +808,23 @@ body::after {
     color: #34D399;
 }
 
-/* Sticky Mobile Payment Bar (Always Visible While Scrolling on Mobile) */
+/* Sticky Mobile Payment Bar */
 .sticky-mobile-bar {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100vw;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(18, 18, 20, 0.95);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-top: 1px solid rgba(214, 201, 189, 0.5);
+    border-top: 1px solid var(--gold-border);
     padding: 12px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     z-index: 1500;
-    box-shadow: 0 -10px 30px rgba(59, 45, 37, 0.1);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
 }
 
 @media (min-width: 768px) {
@@ -865,7 +840,7 @@ body::after {
 
 .sticky-pay-label {
     font-size: 0.6875rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--text-tertiary);
@@ -873,19 +848,19 @@ body::after {
 
 .sticky-pay-amount {
     font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--primary-color);
+    font-weight: 900;
+    color: #FAFAFA;
     line-height: 1;
 }
 
 .btn-sticky-pay {
-    background: linear-gradient(135deg, #3B2D25 0%, #251B16 100%);
-    color: #FFFFFF;
+    background: var(--gold-gradient);
+    color: #121214;
     border: none;
     padding: 12px 18px;
     border-radius: var(--radius-md);
     font-size: 0.9375rem;
-    font-weight: 800;
+    font-weight: 900;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -893,16 +868,16 @@ body::after {
     box-shadow: var(--shadow-button);
 }
 
-/* Liquid Glass Completion Modal */
+/* Dilocash Gold Modal Window */
 .modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(44, 34, 28, 0.55);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(12, 12, 14, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -919,10 +894,10 @@ body::after {
 }
 
 .modal-card {
-    background: var(--glass-bg);
+    background: rgba(24, 24, 28, 0.95);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
+    border: 1px solid var(--gold-border);
     border-radius: var(--radius-xl);
     padding: 28px;
     max-width: 400px;
@@ -931,7 +906,7 @@ body::after {
     display: flex;
     flex-direction: column;
     gap: 18px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
     transform: scale(0.95);
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -944,7 +919,7 @@ body::after {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: rgba(16, 185, 129, 0.15);
+    background: rgba(16, 185, 129, 0.2);
     color: var(--success-color);
     display: inline-flex;
     align-items: center;
@@ -955,7 +930,7 @@ body::after {
 .modal-title {
     font-size: 1.375rem;
     font-weight: 800;
-    color: var(--text-primary);
+    color: #FAFAFA;
 }
 
 .modal-desc {
@@ -965,23 +940,22 @@ body::after {
 }
 
 .btn-close-modal {
-    background: #FFFFFF;
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
+    background: var(--gold-gradient);
+    border: none;
+    color: #121214;
     padding: 12px 18px;
     border-radius: var(--radius-md);
     font-size: 0.875rem;
-    font-weight: 700;
+    font-weight: 900;
     cursor: pointer;
     width: 100%;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    box-shadow: var(--shadow-button);
     transition: all 0.2s ease;
 }
 
 .btn-close-modal:hover {
-    background: var(--primary-light);
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px -4px rgba(229, 193, 88, 0.5);
 }
 
 /* Hidden Helper Utility */
