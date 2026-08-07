@@ -13,23 +13,23 @@ const TICKET_TIERS = {
         description: 'Includes 1 participant registration & full bootcamp access'
     },
     'duo': {
-        name: 'Duo Pass',
+        name: 'Team of 2',
         amount: '1398',
-        label: 'Duo Pass',
+        label: 'Team of 2',
         note: 'UNFOLD 2026',
         description: 'Includes 2 participants registration & full bootcamp access'
     },
     'trio': {
-        name: 'Trio Pass',
+        name: 'Team of 3',
         amount: '2097',
-        label: 'Trio Pass',
+        label: 'Team of 3',
         note: 'UNFOLD 2026',
         description: 'Includes 3 participants registration & full bootcamp access'
     },
     'team4': {
-        name: 'Team of 4 Pass',
+        name: 'Team of 4',
         amount: '2796',
-        label: 'Team of 4 Pass',
+        label: 'Team of 4',
         note: 'UNFOLD 2026',
         description: 'Includes 4 participants registration & full bootcamp access'
     }
