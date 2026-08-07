@@ -8,42 +8,45 @@ let currentConfig = getActiveConfig();
 /**
  * Global Ticket Switcher Function
  * @param {string} key Ticket key ('solo' | 'duo' | 'trio' | 'team4')
+ * @param {boolean} forceLock Whether to lock the selection from Tally
  */
-window.switchTicket = function(key) {
-    // Prevent switching if pass is locked via Tally parameter
-    if (currentConfig && currentConfig.isLocked) {
+window.switchTicket = function(key, forceLock = false) {
+    // Prevent manual switching if pass is locked via Tally selection
+    if (currentConfig && currentConfig.isLocked && !forceLock) {
         showToast('Pass locked based on your Tally selection');
         return;
     }
 
-    if (!key || typeof TICKET_TIERS === 'undefined' || !TICKET_TIERS[key]) {
+    const canonicalKey = (typeof TICKET_KEY_MAP !== 'undefined' && TICKET_KEY_MAP[key]) ? TICKET_KEY_MAP[key] : key;
+    if (!canonicalKey || typeof TICKET_TIERS === 'undefined' || !TICKET_TIERS[canonicalKey]) {
         console.warn('Invalid ticket key:', key);
         return;
     }
 
-    // Direct synchronous active tab toggle for 0ms visual shift
-    const tabs = document.querySelectorAll('.ticket-tab');
-    if (tabs) {
-        tabs.forEach(tab => {
-            const isMatch = (tab.getAttribute('data-ticket') === key);
-            tab.classList.toggle('active', isMatch);
-            tab.setAttribute('aria-selected', isMatch ? 'true' : 'false');
-        });
-    }
-
-    const tier = TICKET_TIERS[key];
+    const tier = TICKET_TIERS[canonicalKey];
     const newConfig = {
         ...currentConfig,
         amount: tier.amount,
         ticketLabel: tier.name || tier.label,
         ticketDescription: tier.description,
         transactionNote: tier.note || 'UNFOLD 2026',
-        ticketKey: key
+        ticketKey: canonicalKey,
+        isLocked: forceLock || currentConfig.isLocked
     };
+
+    // Direct synchronous active tab toggle for 0ms visual shift
+    const tabs = document.querySelectorAll('.ticket-tab');
+    if (tabs) {
+        tabs.forEach(tab => {
+            const isMatch = (tab.getAttribute('data-ticket') === canonicalKey);
+            tab.classList.toggle('active', isMatch);
+            tab.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+        });
+    }
 
     try {
         if (window.history && window.history.replaceState) {
-            const newUrl = window.location.pathname + `?ticket=${key}`;
+            const newUrl = window.location.pathname + `?ticket=${canonicalKey}${newConfig.isLocked ? '&lock=true' : ''}`;
             window.history.replaceState(null, '', newUrl);
         }
     } catch (e) {}
@@ -52,13 +55,12 @@ window.switchTicket = function(key) {
 };
 
 /**
- * Render all payment details & bind deep links for current active pass
+ * Render all payment details for current active pass
  * @param {Object} cfg 
  */
 function renderPaymentDetails(cfg) {
     currentConfig = cfg;
     const upiDeepLink = getUpiDeepLink(cfg);
-    const appLinks = buildAppDeepLinks(upiDeepLink);
 
     // Select DOM Elements
     const amountValEl = document.getElementById('amountVal');
@@ -69,7 +71,7 @@ function renderPaymentDetails(cfg) {
     const ticketTabs = document.querySelectorAll('.ticket-tab');
     const selectorLabelRow = document.querySelector('.selector-label-row');
 
-    // Handle Locked Pass Tabs when linked from Tally
+    // Handle Locked Pass Tabs when linked or selected from Tally
     if (ticketTabs) {
         ticketTabs.forEach(tab => {
             const key = tab.getAttribute('data-ticket');
@@ -98,8 +100,13 @@ function renderPaymentDetails(cfg) {
     if (selectorLabelRow) {
         const badgeEl = selectorLabelRow.querySelector('.selected-badge-indicator');
         if (badgeEl) {
-            badgeEl.innerHTML = `✓ Selected`;
-            badgeEl.classList.remove('badge-locked');
+            if (cfg.isLocked) {
+                badgeEl.innerHTML = `🔒 Locked from Tally Selection`;
+                badgeEl.classList.add('badge-locked');
+            } else {
+                badgeEl.innerHTML = `✓ Selected`;
+                badgeEl.classList.remove('badge-locked');
+            }
         }
     }
 
@@ -280,4 +287,60 @@ function showToast(msg) {
     toastTimeout = setTimeout(() => {
         toast.classList.remove('show');
     }, 2500);
+}
+
+/**
+ * Tally Form PostMessage Listener for Auto-Locking Step 2 Pass
+ * Automatically detects the Registration Category (team count) chosen in the embedded Tally form.
+ */
+window.addEventListener('message', (event) => {
+    if (!event || !event.data) return;
+
+    let payloadStr = '';
+    if (typeof event.data === 'string') {
+        payloadStr = event.data;
+    } else if (typeof event.data === 'object') {
+        try {
+            payloadStr = JSON.stringify(event.data);
+        } catch (e) {
+            payloadStr = '';
+        }
+    }
+
+    if (!payloadStr) return;
+
+    // Detect pass key from Tally message payload
+    const detectedKey = detectPassFromPayload(payloadStr);
+    if (detectedKey) {
+        window.switchTicket(detectedKey, true);
+    }
+});
+
+/**
+ * Parses Tally payload strings to extract Registration Category
+ * @param {string} str Raw payload JSON or string
+ * @returns {string|null} Canonical ticket key ('solo'|'duo'|'trio'|'team4')
+ */
+function detectPassFromPayload(str) {
+    if (!str || typeof str !== 'string') return null;
+    const lower = str.toLowerCase();
+
+    // Check Team of 4
+    if (lower.includes('team of 4') || lower.includes('4 member') || lower.includes('4 participant') || lower.includes('team4') || lower.includes('quad')) {
+        return 'team4';
+    }
+    // Check Team of 3
+    if (lower.includes('team of 3') || lower.includes('3 member') || lower.includes('3 participant') || lower.includes('team3') || lower.includes('trio')) {
+        return 'trio';
+    }
+    // Check Team of 2
+    if (lower.includes('team of 2') || lower.includes('2 member') || lower.includes('2 participant') || lower.includes('team2') || lower.includes('duo')) {
+        return 'duo';
+    }
+    // Check Solo
+    if (lower.includes('solo') || lower.includes('individual') || lower.includes('1 member') || lower.includes('1 participant') || lower.includes('solo pass')) {
+        return 'solo';
+    }
+
+    return null;
 }
