@@ -64,11 +64,16 @@ function renderPaymentDetails(cfg) {
     const btnOpenUpi = document.getElementById('btnOpenUpi');
     const btnStickyPay = document.getElementById('btnStickyPay');
     const ticketTabs = document.querySelectorAll('.ticket-tab');
+    const ticketSelectorCard = document.querySelector('.ticket-selector-card');
 
-    const appGPay = document.getElementById('appGPay');
-    const appSuperMoney = document.getElementById('appSuperMoney');
-    const appSlice = document.getElementById('appSlice');
-    const appBhim = document.getElementById('appBhim');
+    // Option A: Single Pass Lock Mode (Hide multi-pass selector bar when linked from Tally)
+    if (ticketSelectorCard) {
+        if (cfg.isLocked) {
+            ticketSelectorCard.style.display = 'none';
+        } else {
+            ticketSelectorCard.style.display = 'block';
+        }
+    }
 
     // Update Amount & Text Details
     const formattedAmount = isNaN(Number(cfg.amount)) ? cfg.amount : Number(cfg.amount).toLocaleString('en-IN');
@@ -93,39 +98,6 @@ function renderPaymentDetails(cfg) {
         btnStickyPay.onclick = function(e) {
             e.preventDefault();
             launchUpiLink(appLinks.any);
-        };
-    }
-
-    // 2. Specific Direct App Launchers (Google Pay, Super.money, Slice, BHIM)
-    if (appGPay) {
-        appGPay.href = appLinks.gpayIntent || appLinks.gpay;
-        appGPay.onclick = function(e) {
-            e.preventDefault();
-            launchTargetApp(appLinks.gpayIntent, appLinks.gpay, appLinks.any);
-        };
-    }
-
-    if (appSuperMoney) {
-        appSuperMoney.href = appLinks.supermoneyIntent || appLinks.supermoney;
-        appSuperMoney.onclick = function(e) {
-            e.preventDefault();
-            launchTargetApp(appLinks.supermoneyIntent, appLinks.supermoney, appLinks.any);
-        };
-    }
-
-    if (appSlice) {
-        appSlice.href = appLinks.sliceIntent || appLinks.slice;
-        appSlice.onclick = function(e) {
-            e.preventDefault();
-            launchTargetApp(appLinks.sliceIntent, appLinks.slice, appLinks.any);
-        };
-    }
-
-    if (appBhim) {
-        appBhim.href = appLinks.bhimIntent || appLinks.bhim;
-        appBhim.onclick = function(e) {
-            e.preventDefault();
-            launchTargetApp(appLinks.bhimIntent, appLinks.bhim, appLinks.any);
         };
     }
 
@@ -180,32 +152,6 @@ function buildAppDeepLinks(baseUri) {
  */
 function launchUpiLink(url) {
     window.location.href = url;
-}
-
-/**
- * Launches targeted app via Android Intent -> Custom Scheme -> Standard upi:// fallback
- * @param {string} intentUrl 
- * @param {string} customSchemeUrl 
- * @param {string} fallbackUrl 
- */
-function launchTargetApp(intentUrl, customSchemeUrl, fallbackUrl) {
-    const isAndroid = /Android/i.test(navigator.userAgent);
-
-    if (isAndroid && intentUrl) {
-        // Priority 1 on Android: Exact package Android Intent
-        window.location.href = intentUrl;
-    } else {
-        // Priority 2 on iOS / other: Custom app scheme with upi:// fallback
-        let timer = setTimeout(() => {
-            window.location.href = fallbackUrl;
-        }, 800);
-
-        window.location.href = customSchemeUrl || fallbackUrl;
-
-        window.addEventListener('blur', () => {
-            clearTimeout(timer);
-        }, { once: true });
-    }
 }
 
 // Initial DOM Initialization
