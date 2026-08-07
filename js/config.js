@@ -1,8 +1,6 @@
 /**
- * UNFOLD'26 Production UPI Payment Configuration & Reusability Engine
- * 
- * Supports default payment parameters, predefined ticket tiers,
- * and dynamic URL Query Parameter overrides.
+ * UNFOLD 2026 Production UPI Payment Configuration Engine
+ * Configurable ticket catalog, URL query parser, and ticket descriptions
  */
 
 // Predefined Ticket Tier Catalog
@@ -11,25 +9,29 @@ const TICKET_TIERS = {
         name: 'Solo Pass',
         amount: '799',
         label: 'Solo Pass',
-        note: 'UNFOLD 2026'
+        note: 'UNFOLD 2026',
+        description: 'Includes 1 participant registration & full bootcamp access'
     },
     'duo': {
         name: 'Duo Pass',
         amount: '1398',
         label: 'Duo Pass',
-        note: 'UNFOLD 2026'
+        note: 'UNFOLD 2026',
+        description: 'Includes 2 participants registration & full bootcamp access'
     },
     'trio': {
         name: 'Trio Pass',
         amount: '2097',
         label: 'Trio Pass',
-        note: 'UNFOLD 2026'
+        note: 'UNFOLD 2026',
+        description: 'Includes 3 participants registration & full bootcamp access'
     },
     'team4': {
         name: 'Team of 4 Pass',
         amount: '2796',
         label: 'Team of 4 Pass',
-        note: 'UNFOLD 2026'
+        note: 'UNFOLD 2026',
+        description: 'Includes 4 participants registration & full bootcamp access'
     }
 };
 
@@ -40,19 +42,14 @@ const BASE_CONFIG = {
     payeeName: "KEVIN GEORGE (UNFOLD'26)",
     transactionNote: "UNFOLD 2026",
     ticketLabel: "Solo Pass",
-    completionUrl: "#completionModal", // URL or trigger for completion step
-    autoRedirectDelay: 500,  // ms before redirect on mobile
-    fallbackDelay: 2000     // ms before revealing manual fallback
+    ticketDescription: "Includes 1 participant registration & full bootcamp access",
+    completionUrl: "#completionModal",
+    autoRedirectDelay: 500,
+    fallbackDelay: 2000
 };
 
 /**
  * Parses URL query parameters and builds active configuration.
- * Allows reusability via URLs like:
- *   - pay.html?ticket=solo
- *   - pay.html?ticket=duo
- *   - pay.html?amount=999&note=Special%20Workshop
- *   - pay.html?next=https://tally.so/r/your-form
- * 
  * @returns {Object} Final merged active configuration
  */
 function getActiveConfig() {
@@ -71,27 +68,29 @@ function getActiveConfig() {
         const tier = TICKET_TIERS[key];
         active.amount = tier.amount;
         active.ticketLabel = tier.name || tier.label;
+        active.ticketDescription = tier.description;
         active.transactionNote = tier.note;
         active.ticketKey = key;
     } else {
         active.ticketKey = 'solo';
     }
 
-    // 2. Direct Query Parameter overrides (highest priority)
+    // 2. Direct Query Parameter overrides
     if (urlParams.has('amount')) active.amount = urlParams.get('amount');
     if (urlParams.has('upiId')) active.upiId = urlParams.get('upiId');
     if (urlParams.has('payee')) active.payeeName = urlParams.get('payee');
     if (urlParams.has('note')) active.transactionNote = urlParams.get('note');
     if (urlParams.has('label')) active.ticketLabel = urlParams.get('label');
+    if (urlParams.has('desc')) active.ticketDescription = urlParams.get('desc');
     if (urlParams.has('next')) active.completionUrl = urlParams.get('next');
 
     return active;
 }
 
 /**
- * Builds standard UPI Deep Link URL based on active configuration
+ * Builds standard UPI Deep Link URL
  * Format: upi://pay?pa=...&pn=...&am=...&cu=INR&tn=...
- * @param {Object} config Optional custom config, defaults to getActiveConfig()
+ * @param {Object} config Optional custom config
  * @returns {string} Fully encoded UPI Deep Link
  */
 function getUpiDeepLink(config) {

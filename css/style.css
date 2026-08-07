@@ -1,21 +1,20 @@
 /* ==========================================================================
-   UNFOLD 2026 - Ultra-Premium Liquid Glass Fintech UI
-   Aesthetic: Apple-inspired • Stripe-inspired • Linear-inspired
-   Features: Frosted Glass • Backdrop Blur • Translucent Cards • Soft UI
+   UNFOLD 2026 - Ultra-Premium Liquid Glass Fintech UI (Apple × Stripe × Razorpay)
+   Features: Frosted Glass • Backdrop Blur • Dynamic Pass Summary • Sticky Mobile CTA
    ========================================================================== */
 
 :root {
     /* Color System - Warm Luxury Palette */
     --primary-color: #3B2D25;       /* Earthy Dark Espresso */
-    --primary-hover: #261D18;       /* Deep Charcoal Espresso */
-    --primary-light: rgba(244, 239, 234, 0.7); /* Translucent Cream */
+    --primary-hover: #231A15;       /* Deep Charcoal Espresso */
+    --primary-light: rgba(244, 239, 234, 0.85); /* Translucent Cream */
     --primary-accent: #8C7261;      /* Warm Metallic Bronze Accent */
     
     /* Glassmorphism Tokens */
-    --glass-bg: rgba(255, 255, 255, 0.75);
-    --glass-bg-hover: rgba(255, 255, 255, 0.85);
-    --glass-border: rgba(255, 255, 255, 0.85);
-    --glass-border-subtle: rgba(216, 200, 184, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.78);
+    --glass-bg-hover: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(255, 255, 255, 0.9);
+    --glass-border-subtle: rgba(216, 200, 184, 0.5);
     --glass-blur: blur(24px) saturate(190%);
 
     /* Base Palette */
@@ -23,13 +22,13 @@
     --text-primary: #2C221C;        /* Deep Slate Brown */
     --text-secondary: #5F5046;      /* Muted Slate Brown */
     --text-tertiary: #98887C;       /* Soft Taupe */
-    --border-color: rgba(214, 201, 189, 0.5);
+    --border-color: rgba(214, 201, 189, 0.6);
     
     /* Trust & State Colors */
     --success-color: #10B981;       /* Emerald Success */
-    --success-bg: rgba(16, 185, 129, 0.1);
-    --warning-bg: rgba(254, 243, 199, 0.7);
-    --warning-border: rgba(245, 158, 11, 0.3);
+    --success-bg: rgba(16, 185, 129, 0.12);
+    --warning-bg: rgba(254, 243, 199, 0.75);
+    --warning-border: rgba(245, 158, 11, 0.4);
     --warning-text: #78350F;
 
     /* Typography & Radius */
@@ -44,9 +43,9 @@
                     0 10px 20px -5px rgba(0, 0, 0, 0.04),
                     inset 0 1px 1px rgba(255, 255, 255, 0.9),
                     inset 0 -1px 2px rgba(59, 45, 37, 0.04);
-    --shadow-button: 0 8px 20px -4px rgba(59, 45, 37, 0.3),
+    --shadow-button: 0 8px 24px -4px rgba(59, 45, 37, 0.35),
                     0 2px 6px -1px rgba(59, 45, 37, 0.2);
-    --shadow-tab: 0 2px 8px rgba(59, 45, 37, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --shadow-tab: 0 4px 12px rgba(59, 45, 37, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     --shadow-toast: 0 20px 40px -8px rgba(44, 34, 28, 0.35);
 }
 
@@ -69,6 +68,13 @@ html, body {
     overflow-x: hidden;
 }
 
+/* Accessibility Visible Focus Outlines */
+:focus-visible {
+    outline: 2.5px solid var(--primary-color);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
 /* Ambient Radial Glow Background */
 body::before {
     content: '';
@@ -76,8 +82,8 @@ body::before {
     top: -10%;
     left: 50%;
     transform: translateX(-50%);
-    width: 600px;
-    height: 600px;
+    width: 650px;
+    height: 650px;
     background: radial-gradient(circle, rgba(216, 200, 184, 0.45) 0%, rgba(247, 244, 238, 0) 70%);
     z-index: 0;
     pointer-events: none;
@@ -89,8 +95,8 @@ body::after {
     position: fixed;
     bottom: -15%;
     right: -10%;
-    width: 500px;
-    height: 500px;
+    width: 550px;
+    height: 550px;
     background: radial-gradient(circle, rgba(235, 223, 210, 0.35) 0%, rgba(247, 244, 238, 0) 70%);
     z-index: 0;
     pointer-events: none;
@@ -104,14 +110,20 @@ body::after {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px 16px;
+    padding: 40px 16px 110px 16px; /* Extra bottom padding for sticky bar on mobile */
     position: relative;
     z-index: 1;
 }
 
+@media (min-width: 768px) {
+    .page-container {
+        padding-bottom: 50px;
+    }
+}
+
 .main-wrapper {
     width: 100%;
-    max-width: 450px;
+    max-width: 460px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -257,6 +269,12 @@ body::after {
     width: 100%;
 }
 
+.selector-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .selector-label {
     font-size: 0.75rem;
     font-weight: 700;
@@ -265,15 +283,24 @@ body::after {
     color: var(--text-tertiary);
 }
 
+.selected-badge-indicator {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--success-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .ticket-tabs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
+    gap: 8px;
     width: 100%;
     background: rgba(230, 222, 212, 0.4);
-    padding: 5px;
+    padding: 6px;
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(214, 201, 189, 0.4);
+    border: 1px solid rgba(214, 201, 189, 0.5);
     backdrop-filter: blur(10px);
 }
 
@@ -290,21 +317,22 @@ body::after {
     justify-content: center;
     padding: 10px 6px;
     background: transparent;
-    border: 1px solid transparent;
+    border: 1.5px solid transparent;
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: center;
     user-select: none;
+    position: relative;
 }
 
 .ticket-tab:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.55);
 }
 
 .ticket-tab.active {
     background: #FFFFFF;
-    border-color: rgba(214, 201, 189, 0.6);
+    border-color: var(--primary-color);
     box-shadow: var(--shadow-tab);
 }
 
@@ -332,18 +360,40 @@ body::after {
     color: var(--primary-color);
 }
 
+/* Active Checkmark Pill on Tab */
+.tab-check-icon {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: #FFFFFF;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem;
+    font-weight: 900;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.ticket-tab.active .tab-check-icon {
+    display: flex;
+}
+
 /* Stripe/Fintech Hero PAY Card Box */
 .hero-pay-box {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(244, 239, 234, 0.6) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(244, 239, 234, 0.7) 100%);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     padding: 22px 18px;
     text-align: center;
-    gap: 10px;
+    gap: 8px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 16px rgba(59, 45, 37, 0.04);
 }
 
@@ -357,7 +407,7 @@ body::after {
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     color: var(--primary-color);
 }
 
@@ -379,14 +429,26 @@ body::after {
 }
 
 .hero-amount-val {
-    font-size: 2.625rem;
+    font-size: 2.75rem;
     font-weight: 800;
     color: var(--primary-color);
     letter-spacing: -0.04em;
     line-height: 1;
 }
 
-/* Razorpay-Style UPI Launch Box & App Grid */
+/* Dynamic Pass Summary Description */
+.ticket-summary-note {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    line-height: 1.35;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    border: 1px dashed var(--border-color);
+}
+
+/* Razorpay-Style Primary High-Impact CTA */
 .upi-launch-box {
     display: flex;
     flex-direction: column;
@@ -399,11 +461,11 @@ body::after {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     background: var(--primary-color);
     color: #FFFFFF;
     border: none;
-    padding: 16px 24px;
+    padding: 17px 24px;
     border-radius: var(--radius-lg);
     font-size: 1.0625rem;
     font-weight: 800;
@@ -411,16 +473,26 @@ body::after {
     cursor: pointer;
     box-shadow: var(--shadow-button);
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary-pay:hover {
     background: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 12px 26px -4px rgba(59, 45, 37, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -4px rgba(59, 45, 37, 0.4);
 }
 
 .btn-primary-pay:active {
     transform: translateY(1px);
+}
+
+.cta-arrow-icon {
+    transition: transform 0.2s ease;
+}
+
+.btn-primary-pay:hover .cta-arrow-icon {
+    transform: translateX(4px);
 }
 
 .app-grid-header {
@@ -569,7 +641,7 @@ body::after {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.85);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
     padding: 6px 14px;
@@ -587,6 +659,12 @@ body::after {
     color: var(--primary-color);
     border-color: var(--primary-color);
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.btn-copy.copied {
+    background: #D1FAE5;
+    color: #065F46;
+    border-color: #A7F3D0;
 }
 
 .btn-copy:active {
@@ -658,30 +736,57 @@ body::after {
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.55);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
-    padding: 20px 16px;
+    padding: 22px 18px;
     width: 100%;
     backdrop-filter: blur(12px);
 }
 
 .qr-code-box {
     background: #FFFFFF;
-    padding: 14px;
+    padding: 16px;
     border-radius: var(--radius-md);
-    box-shadow: 0 4px 16px rgba(59, 45, 37, 0.06);
+    box-shadow: 0 6px 20px rgba(59, 45, 37, 0.08);
     border: 1px solid var(--border-color);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.qr-caption-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
 .qr-caption {
     font-size: 0.8125rem;
     color: var(--text-secondary);
-    font-weight: 500;
-    max-width: 300px;
+    font-weight: 600;
+}
+
+.btn-download-qr {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 5px 12px;
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-download-qr:hover {
+    background: var(--primary-light);
+    color: var(--primary-color);
 }
 
 /* Instructions Card */
@@ -736,36 +841,68 @@ body::after {
     margin-top: 1px;
 }
 
-/* Trust Indicator Footer */
-.trust-footer {
+/* Security Badges & Trust Footer */
+.security-badges-bar {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 12px;
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--text-tertiary);
-    margin-top: -4px;
+    flex-wrap: wrap;
 }
 
-/* Footer & Support Link */
-.footer-text {
-    font-size: 0.8125rem;
-    color: var(--text-tertiary);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
+.security-badge-item {
+    display: inline-flex;
+    align-items: center;
     gap: 4px;
 }
 
-.footer-text a {
-    color: var(--text-secondary);
-    text-decoration: underline;
-    font-weight: 500;
+/* Multi-Channel Support Footer */
+.footer-support-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    text-align: center;
+    margin-top: 4px;
 }
 
-.footer-text a:hover {
+.support-channels {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.support-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.support-link:hover {
+    background: #FFFFFF;
     color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.support-sla {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    font-weight: 500;
 }
 
 /* Frosted Glass Toast Notification */
@@ -800,6 +937,66 @@ body::after {
 
 .toast-icon {
     color: #34D399;
+}
+
+/* Sticky Mobile Payment Bar (Always Visible While Scrolling on Mobile) */
+.sticky-mobile-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(214, 201, 189, 0.5);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 1500;
+    box-shadow: 0 -10px 30px rgba(59, 45, 37, 0.1);
+}
+
+@media (min-width: 768px) {
+    .sticky-mobile-bar {
+        display: none !important;
+    }
+}
+
+.sticky-pay-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.sticky-pay-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+}
+
+.sticky-pay-amount {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.btn-sticky-pay {
+    background: var(--primary-color);
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 18px;
+    border-radius: var(--radius-md);
+    font-size: 0.9375rem;
+    font-weight: 800;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: var(--shadow-button);
 }
 
 /* Liquid Glass Completion Modal */
