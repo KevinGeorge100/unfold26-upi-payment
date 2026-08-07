@@ -124,11 +124,6 @@ function renderPaymentDetails(cfg) {
         document.title = `UNFOLD 2026 Payment - ${cfg.ticketLabel}`;
     }
 
-    // Re-render QR Code Canvas
-    if (qrContainer && typeof window.EasyQRCode === 'function') {
-        window.EasyQRCode(qrContainer, upiDeepLink, 180);
-    }
-
     // Update Active Tab Highlight
     if (ticketTabs) {
         ticketTabs.forEach(tab => {
