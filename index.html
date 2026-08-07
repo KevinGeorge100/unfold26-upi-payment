@@ -198,14 +198,17 @@
                     </div>
                 </div>
 
-                <!-- Payment Completion Action -->
-                <button id="btnCompleted" class="btn-completed" type="button">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    I've Completed Payment
-                </button>
+                <!-- Payment Completion Checkbox Action -->
+                <label class="completion-checkbox-card" for="chkCompleted">
+                    <input type="checkbox" id="chkCompleted" class="completion-checkbox-input">
+                    <span class="custom-checkbox-box" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </span>
+                    <span class="completion-checkbox-text">I've completed payment</span>
+                </label>
 
             </section>
 

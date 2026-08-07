@@ -204,18 +204,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Completion Modal Handlers
-    const btnCompleted = document.getElementById('btnCompleted');
+    // Completion Checkbox & Modal Handlers
+    const chkCompleted = document.getElementById('chkCompleted');
     const completionModal = document.getElementById('completionModal');
     const btnCloseModal = document.getElementById('btnCloseModal');
 
-    if (btnCompleted) {
-        btnCompleted.addEventListener('click', (e) => {
-            if (currentConfig.completionUrl && currentConfig.completionUrl.startsWith('http')) {
-                window.location.href = currentConfig.completionUrl;
-            } else {
-                e.preventDefault();
-                if (completionModal) completionModal.classList.add('active');
+    if (chkCompleted) {
+        chkCompleted.addEventListener('change', () => {
+            if (chkCompleted.checked) {
+                if (currentConfig.completionUrl && currentConfig.completionUrl.startsWith('http')) {
+                    window.location.href = currentConfig.completionUrl;
+                } else {
+                    if (completionModal) completionModal.classList.add('active');
+                }
             }
         });
     }

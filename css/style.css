@@ -661,35 +661,79 @@ body::after {
     width: 100%;
 }
 
-/* Completion Action Button ("✓ I've Completed Payment") */
-.btn-completed {
+/* Completion Checkbox Card ("I've completed payment") */
+.completion-checkbox-card {
     width: 100%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    background: var(--success-color);
-    color: #FFFFFF;
-    border: none;
-    padding: 15px 22px;
+    gap: 12px;
+    background: #FFFFFF;
+    border: 2px solid rgba(214, 201, 189, 0.7);
+    padding: 14px 20px;
     border-radius: var(--radius-lg);
-    font-size: 1rem;
-    font-weight: 700;
-    text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.35);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    margin-top: 4px;
+    margin-top: 16px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(59, 45, 37, 0.05);
 }
 
-.btn-completed:hover {
-    background: #059669;
+.completion-checkbox-card:hover {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 6px 16px rgba(184, 75, 41, 0.12);
     transform: translateY(-1px);
-    box-shadow: 0 12px 24px -4px rgba(16, 185, 129, 0.45);
 }
 
-.btn-completed:active {
-    transform: translateY(1px);
+.completion-checkbox-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.custom-checkbox-box {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 6px;
+    border: 2px solid #C4B9AD;
+    background: #FAF8F5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: #FFFFFF;
+}
+
+.custom-checkbox-box svg {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.completion-checkbox-input:checked + .custom-checkbox-box {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(184, 75, 41, 0.35);
+}
+
+.completion-checkbox-input:checked + .custom-checkbox-box svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.completion-checkbox-card:has(.completion-checkbox-input:checked) {
+    border-color: var(--primary-color);
+    background: rgba(184, 75, 41, 0.04);
+}
+
+.completion-checkbox-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 /* Divider "OR" */
