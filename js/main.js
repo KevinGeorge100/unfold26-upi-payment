@@ -1,9 +1,8 @@
 /**
  * UNFOLD 2026 Production UPI Payment Handshake Script
- * High-Impact Handoff, Sticky Mobile Bar, QR Download & Pass Summary Engine
+ * Android Intent Package Launchers + Custom Schemes Engine
  */
 
-// Global active configuration reference
 let currentConfig = getActiveConfig();
 
 /**
@@ -36,21 +35,18 @@ window.switchTicket = function(key) {
         ticketKey: key
     };
 
-    // Update URL query string without reloading page
     try {
         if (window.history && window.history.replaceState) {
             const newUrl = window.location.pathname + `?ticket=${key}`;
             window.history.replaceState(null, '', newUrl);
         }
-    } catch (e) {
-        // Fallback for strict sandbox iframe environments
-    }
+    } catch (e) {}
 
     renderPaymentDetails(newConfig);
 };
 
 /**
- * Render all payment details, deep links, QR code, and active tabs
+ * Render all payment details & bind deep links for current active pass
  * @param {Object} cfg 
  */
 function renderPaymentDetails(cfg) {
@@ -67,15 +63,14 @@ function renderPaymentDetails(cfg) {
     const ticketSummaryNoteEl = document.getElementById('ticketSummaryNote');
     const btnOpenUpi = document.getElementById('btnOpenUpi');
     const btnStickyPay = document.getElementById('btnStickyPay');
-    const qrContainer = document.getElementById('qrContainer');
     const ticketTabs = document.querySelectorAll('.ticket-tab');
 
     const appGPay = document.getElementById('appGPay');
-    const appPhonePe = document.getElementById('appPhonePe');
-    const appPaytm = document.getElementById('appPaytm');
+    const appSuperMoney = document.getElementById('appSuperMoney');
+    const appSlice = document.getElementById('appSlice');
     const appBhim = document.getElementById('appBhim');
 
-    // Update Amount & Text
+    // Update Amount & Text Details
     const formattedAmount = isNaN(Number(cfg.amount)) ? cfg.amount : Number(cfg.amount).toLocaleString('en-IN');
     if (amountValEl) amountValEl.textContent = `₹${formattedAmount}`;
     if (stickyAmountValEl) stickyAmountValEl.textContent = `₹${formattedAmount}`;
@@ -84,12 +79,12 @@ function renderPaymentDetails(cfg) {
     if (ticketLabelEl) ticketLabelEl.textContent = cfg.ticketLabel || cfg.name || 'Solo Pass';
     if (ticketSummaryNoteEl) ticketSummaryNoteEl.textContent = cfg.ticketDescription || 'Includes registration & full bootcamp access';
 
-    // Update Primary Handoff Buttons
+    // 1. Primary Any UPI App Buttons
     if (btnOpenUpi) {
         btnOpenUpi.href = appLinks.any;
         btnOpenUpi.onclick = function(e) {
             e.preventDefault();
-            window.location.href = appLinks.any;
+            launchUpiLink(appLinks.any);
         };
     }
 
@@ -97,26 +92,41 @@ function renderPaymentDetails(cfg) {
         btnStickyPay.href = appLinks.any;
         btnStickyPay.onclick = function(e) {
             e.preventDefault();
-            window.location.href = appLinks.any;
+            launchUpiLink(appLinks.any);
         };
     }
 
-    // Update Specific App Handoff Buttons (Google Pay, Super.money, Slice, BHIM)
+    // 2. Specific Direct App Launchers (Google Pay, Super.money, Slice, BHIM)
     if (appGPay) {
-        appGPay.href = appLinks.gpay;
-        appGPay.onclick = function(e) { e.preventDefault(); tryLaunchApp(appLinks.gpay, appLinks.any); };
+        appGPay.href = appLinks.gpayIntent || appLinks.gpay;
+        appGPay.onclick = function(e) {
+            e.preventDefault();
+            launchTargetApp(appLinks.gpayIntent, appLinks.gpay, appLinks.any);
+        };
     }
+
     if (appSuperMoney) {
-        appSuperMoney.href = appLinks.supermoney;
-        appSuperMoney.onclick = function(e) { e.preventDefault(); tryLaunchApp(appLinks.supermoney, appLinks.any); };
+        appSuperMoney.href = appLinks.supermoneyIntent || appLinks.supermoney;
+        appSuperMoney.onclick = function(e) {
+            e.preventDefault();
+            launchTargetApp(appLinks.supermoneyIntent, appLinks.supermoney, appLinks.any);
+        };
     }
+
     if (appSlice) {
-        appSlice.href = appLinks.slice;
-        appSlice.onclick = function(e) { e.preventDefault(); tryLaunchApp(appLinks.slice, appLinks.any); };
+        appSlice.href = appLinks.sliceIntent || appLinks.slice;
+        appSlice.onclick = function(e) {
+            e.preventDefault();
+            launchTargetApp(appLinks.sliceIntent, appLinks.slice, appLinks.any);
+        };
     }
+
     if (appBhim) {
-        appBhim.href = appLinks.bhim;
-        appBhim.onclick = function(e) { e.preventDefault(); window.location.href = appLinks.bhim; };
+        appBhim.href = appLinks.bhimIntent || appLinks.bhim;
+        appBhim.onclick = function(e) {
+            e.preventDefault();
+            launchTargetApp(appLinks.bhimIntent, appLinks.bhim, appLinks.any);
+        };
     }
 
     // Update Document Title
@@ -136,41 +146,70 @@ function renderPaymentDetails(cfg) {
 }
 
 /**
- * Build app-specific UPI URIs for Razorpay-style direct app launch
+ * Builds app-specific Android Intent & Custom Scheme URIs
  * @param {string} baseUri 
- * @returns {Object}
+ * @returns {Object} Deep link targets for each app
  */
 function buildAppDeepLinks(baseUri) {
     const rawParams = baseUri.replace('upi://pay?', '');
+    const encodedParams = rawParams;
+
     return {
         any: baseUri,
+        // Google Pay
         gpay: `gpay://upi/pay?${rawParams}`,
+        gpayIntent: `intent://pay?${encodedParams}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`,
+
+        // Super.money
         supermoney: `supermoney://pay?${rawParams}`,
+        supermoneyIntent: `intent://pay?${encodedParams}#Intent;scheme=upi;package=com.supermoney.app;end`,
+
+        // Slice
         slice: `slice://pay?${rawParams}`,
-        bhim: baseUri
+        sliceIntent: `intent://pay?${encodedParams}#Intent;scheme=upi;package=ind.pay.slice;end`,
+
+        // BHIM
+        bhim: `bhim://pay?${rawParams}`,
+        bhimIntent: `intent://pay?${encodedParams}#Intent;scheme=upi;package=in.org.npci.upiapp;end`
     };
 }
 
 /**
- * Try launching custom scheme with fallback to standard upi://
- * @param {string} primaryScheme 
- * @param {string} fallbackScheme 
+ * Universal UPI Link Launcher
+ * @param {string} url 
  */
-function tryLaunchApp(primaryScheme, fallbackScheme) {
-    let timer = setTimeout(() => {
-        window.location.href = fallbackScheme;
-    }, 800);
+function launchUpiLink(url) {
+    window.location.href = url;
+}
 
-    window.location.href = primaryScheme;
+/**
+ * Launches targeted app via Android Intent -> Custom Scheme -> Standard upi:// fallback
+ * @param {string} intentUrl 
+ * @param {string} customSchemeUrl 
+ * @param {string} fallbackUrl 
+ */
+function launchTargetApp(intentUrl, customSchemeUrl, fallbackUrl) {
+    const isAndroid = /Android/i.test(navigator.userAgent);
 
-    window.addEventListener('blur', () => {
-        clearTimeout(timer);
-    }, { once: true });
+    if (isAndroid && intentUrl) {
+        // Priority 1 on Android: Exact package Android Intent
+        window.location.href = intentUrl;
+    } else {
+        // Priority 2 on iOS / other: Custom app scheme with upi:// fallback
+        let timer = setTimeout(() => {
+            window.location.href = fallbackUrl;
+        }, 800);
+
+        window.location.href = customSchemeUrl || fallbackUrl;
+
+        window.addEventListener('blur', () => {
+            clearTimeout(timer);
+        }, { once: true });
+    }
 }
 
 // Initial DOM Initialization
 document.addEventListener('DOMContentLoaded', () => {
-    // Resolve initial active config
     currentConfig = getActiveConfig();
     renderPaymentDetails(currentConfig);
 
@@ -195,24 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (copyUpiBtn) {
         copyUpiBtn.addEventListener('click', () => {
             copyToClipboard(currentConfig.upiId, 'UPI ID copied to clipboard!', copyUpiBtn, 'Copy UPI ID');
-        });
-    }
-
-    // Download QR Code Canvas Handler
-    const btnDownloadQr = document.getElementById('btnDownloadQr');
-    if (btnDownloadQr) {
-        btnDownloadQr.addEventListener('click', () => {
-            const qrCanvas = document.querySelector('#qrContainer canvas');
-            if (qrCanvas) {
-                const imageUri = qrCanvas.toDataURL('image/png');
-                const link = document.createElement('a');
-                link.download = `UNFOLD2026-Payment-QR-${currentConfig.ticketKey || 'pass'}.png`;
-                link.href = imageUri;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showToast('QR Code saved to downloads!');
-            }
         });
     }
 
@@ -247,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Mobile device check
- * @returns {boolean}
  */
 function checkIsMobile() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -256,7 +276,7 @@ function checkIsMobile() {
 }
 
 /**
- * Copy to clipboard utility with button morphing
+ * Copy to clipboard helper with button morphing
  */
 function copyToClipboard(text, successMsg, buttonEl, defaultLabel) {
     if (navigator.clipboard && window.isSecureContext) {
