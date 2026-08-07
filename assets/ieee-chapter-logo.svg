@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="100%" height="auto">
+  <style>
+    .title-bold { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 800; fill: #0F172A; font-size: 54px; }
+    .title-light { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 400; fill: #0F172A; font-size: 52px; }
+    .society-text { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 800; font-style: italic; }
+  </style>
+
+  <!-- Left: IEEE IAS Logo -->
+  <g transform="translate(40, 30)">
+    <!-- IAS Green Wave Symbol -->
+    <path d="M120 20 L135 20 L155 105 L170 30 L185 105 L200 65 L240 65" stroke="#008A44" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 60 70 L 155 70 L 148 105 Z" fill="#008A44"/>
+    <text x="50" y="42" class="society-text" fill="#008A44" font-size="28">IEEE</text>
+    <text x="50" y="68" class="society-text" fill="#008A44" font-size="32">IAS</text>
+    <text x="50" y="105" font-family="Inter, sans-serif" font-weight="900" font-style="italic" fill="#0F172A" font-size="26">INDUSTRY</text>
+    <text x="50" y="132" font-family="Inter, sans-serif" font-weight="900" font-style="italic" fill="#0F172A" font-size="26">APPLICATIONS</text>
+    <text x="50" y="159" font-family="Inter, sans-serif" font-weight="900" font-style="italic" fill="#0F172A" font-size="26">SOCIETY</text>
+  </g>
+
+  <!-- Divider 1 -->
+  <line x1="330" y1="40" x2="330" y2="180" stroke="#94A3B8" stroke-width="2.5"/>
+
+  <!-- Center: IEEE IES Logo -->
+  <g transform="translate(355, 30)">
+    <!-- IES Gear Circuit Icon -->
+    <g transform="translate(10, 10)">
+      <circle cx="60" cy="75" r="55" fill="none" stroke="#004B87" stroke-width="10" stroke-dasharray="14 8"/>
+      <circle cx="60" cy="75" r="40" fill="none" stroke="#004B87" stroke-width="4"/>
+      <path d="M40 70 L55 55 L75 55 L85 70 L75 90 L55 90 Z" fill="none" stroke="#E65100" stroke-width="4"/>
+      <text x="42" y="83" font-family="Inter, sans-serif" font-weight="900" fill="#E65100" font-size="24">ies</text>
+    </g>
+    <!-- IES Text -->
+    <text x="145" y="48" font-family="Inter, sans-serif" font-weight="800" fill="#004B87" font-size="34">IEEE</text>
+    <text x="145" y="85" font-family="Inter, sans-serif" font-weight="700" fill="#004B87" font-size="32">Industrial</text>
+    <text x="145" y="122" font-family="Inter, sans-serif" font-weight="700" fill="#004B87" font-size="32">Electronics</text>
+    <text x="145" y="158" font-family="Inter, sans-serif" font-weight="700" fill="#004B87" font-size="32">Society</text>
+  </g>
+
+  <!-- Divider 2 -->
+  <line x1="680" y1="40" x2="680" y2="180" stroke="#94A3B8" stroke-width="2.5"/>
+
+  <!-- Right: IEEE PELS Logo -->
+  <g transform="translate(710, 30)">
+    <text x="35" y="45" font-family="Inter, sans-serif" font-weight="800" fill="#C2185B" font-size="44" letter-spacing="-1">pels</text>
+    <line x1="35" y1="52" x2="145" y2="52" stroke="#C2185B" stroke-width="4"/>
+    <!-- Triangle Pulse Symbol -->
+    <polygon points="90,60 40,140 140,140" fill="none" stroke="#C2185B" stroke-width="6"/>
+    <path d="M50 115 L75 115 L75 95 L105 95 L105 115 L130 115" stroke="#C2185B" stroke-width="6" fill="none"/>
+    <text x="25" y="162" font-family="Inter, sans-serif" font-weight="800" fill="#C2185B" font-size="14">IEEE POWER</text>
+    <text x="15" y="178" font-family="Inter, sans-serif" font-weight="800" fill="#C2185B" font-size="14">ELECTRONICS SOCIETY</text>
+  </g>
+
+  <!-- Horizontal Separator Line -->
+  <line x1="40" y1="210" x2="860" y2="210" stroke="#0F172A" stroke-width="4"/>
+
+  <!-- Bottom Title Line: IEEE IA/IE/PELS Jt. Chapter Kerala -->
+  <text x="50" y="275">
+    <tspan class="title-bold">IEEE IA/IE/PELS</tspan>
+    <tspan class="title-light"> Jt. Chapter Kerala</tspan>
+  </text>
+</svg>
