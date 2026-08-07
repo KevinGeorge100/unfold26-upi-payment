@@ -45,8 +45,61 @@ const BASE_CONFIG = {
     ticketDescription: "Includes 1 participant registration & full bootcamp access",
     completionUrl: "#completionModal",
     autoRedirectDelay: 500,
-    fallbackDelay: 2000
+    fallbackDelay: 2000,
+    allowSensitiveQueryOverridesInDevOnly: true,
+    allowedCompletionDomains: [
+        'tally.so',
+        'www.tally.so',
+        'unfold26.in',
+        'www.unfold26.in'
+    ]
 };
+
+function isProductionEnvironment() {
+    if (typeof window === 'undefined' || !window.location) return false;
+    const host = (window.location.hostname || '').toLowerCase();
+    return !(host === 'localhost' || host === '127.0.0.1' || host === '::1' || host.endsWith('.local'));
+}
+
+function sanitizeAmount(amountValue, fallbackValue) {
+    const value = String(amountValue || '').trim();
+    if (!/^\d+(\.\d{1,2})?$/.test(value)) return fallbackValue;
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed <= 0) return fallbackValue;
+    return value;
+}
+
+function sanitizeUpiId(upiValue, fallbackValue) {
+    const value = String(upiValue || '').trim();
+    if (!/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(value)) return fallbackValue;
+    return value;
+}
+
+function isAllowedHost(hostname, allowlist) {
+    const host = String(hostname || '').toLowerCase();
+    return (allowlist || []).some(domain => {
+        const allowed = String(domain || '').toLowerCase();
+        return host === allowed || host.endsWith(`.${allowed}`);
+    });
+}
+
+function sanitizeCompletionUrl(nextUrl, fallbackUrl, allowlist) {
+    const value = String(nextUrl || '').trim();
+    if (!value) return fallbackUrl;
+    if (value.startsWith('#')) return value;
+    if (typeof window === 'undefined' || !window.location) return fallbackUrl;
+
+    try {
+        const parsed = new URL(value, window.location.origin);
+        const isSameOrigin = parsed.origin === window.location.origin;
+        const isHttps = parsed.protocol === 'https:';
+        if (isSameOrigin) return parsed.href;
+        if (isHttps && isAllowedHost(parsed.hostname, allowlist)) return parsed.href;
+        return fallbackUrl;
+    } catch (error) {
+        return fallbackUrl;
+    }
+}
 
 /**
  * Parses URL query parameters and builds active configuration.
@@ -76,13 +129,25 @@ function getActiveConfig() {
     }
 
     // 2. Direct Query Parameter overrides
-    if (urlParams.has('amount')) active.amount = urlParams.get('amount');
-    if (urlParams.has('upiId')) active.upiId = urlParams.get('upiId');
+    const isProd = isProductionEnvironment();
+    const allowSensitiveOverrides = !isProd || !active.allowSensitiveQueryOverridesInDevOnly;
+    if (allowSensitiveOverrides && urlParams.has('amount')) {
+        active.amount = sanitizeAmount(urlParams.get('amount'), active.amount);
+    }
+    if (allowSensitiveOverrides && urlParams.has('upiId')) {
+        active.upiId = sanitizeUpiId(urlParams.get('upiId'), active.upiId);
+    }
     if (urlParams.has('payee')) active.payeeName = urlParams.get('payee');
     if (urlParams.has('note')) active.transactionNote = urlParams.get('note');
     if (urlParams.has('label')) active.ticketLabel = urlParams.get('label');
     if (urlParams.has('desc')) active.ticketDescription = urlParams.get('desc');
-    if (urlParams.has('next')) active.completionUrl = urlParams.get('next');
+    if (urlParams.has('next')) {
+        active.completionUrl = sanitizeCompletionUrl(
+            urlParams.get('next'),
+            active.completionUrl,
+            active.allowedCompletionDomains
+        );
+    }
 
     return active;
 }
@@ -107,5 +172,14 @@ function getUpiDeepLink(config) {
 
 // Export for module environments if present
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { BASE_CONFIG, TICKET_TIERS, getActiveConfig, getUpiDeepLink };
+    module.exports = {
+        BASE_CONFIG,
+        TICKET_TIERS,
+        getActiveConfig,
+        getUpiDeepLink,
+        sanitizeCompletionUrl,
+        sanitizeAmount,
+        sanitizeUpiId,
+        isProductionEnvironment
+    };
 }

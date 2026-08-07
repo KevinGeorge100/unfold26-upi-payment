@@ -64,3 +64,30 @@ UNFOLD 2026/
 - **Vercel**: `npx vercel`
 - **Netlify**: Drag and drop folder onto Netlify Drop
 - **GitHub Pages**: Turn on GitHub Pages on `main` branch
+
+---
+
+## Security Hardening Status
+
+Implemented in code/config:
+- Strict security headers in `/vercel.json`:
+  - `Content-Security-Policy`
+  - `Referrer-Policy`
+  - `Permissions-Policy`
+  - `Strict-Transport-Security`
+  - `Cross-Origin-Opener-Policy`
+  - `Cross-Origin-Resource-Policy`
+  - Existing `X-Content-Type-Options` and `X-Frame-Options` retained
+- Removed inline `onclick` handlers to support strict `script-src 'self'` CSP.
+- Production guardrails in `/js/config.js`:
+  - Blocks URL overrides of `amount` and `upiId` outside localhost/dev.
+  - Validates `next` redirect URL against an allowlist (`tally.so`, `unfold26.in`) and allows same-origin redirects.
+
+Required GitHub/Org settings (manual, outside codebase):
+- Set repo visibility to **Private** and disable forking.
+- Require MFA/2FA for all org members/collaborators.
+- Enforce branch protection (PR reviews, required checks, no force-push, no delete).
+- Enable Dependabot alerts + security updates.
+- Enable secret scanning + push protection.
+- Enable code scanning (CodeQL) and private vulnerability reporting.
+- Restrict and rotate secrets/tokens; use protected production environments.

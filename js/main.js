@@ -181,6 +181,16 @@ document.addEventListener('DOMContentLoaded', () => {
         desktopNotice.classList.remove('hidden');
     }
 
+    const ticketTabs = document.querySelectorAll('.ticket-tab');
+    if (ticketTabs) {
+        ticketTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const key = tab.getAttribute('data-ticket');
+                if (key) window.switchTicket(key);
+            });
+        });
+    }
+
     // Copy Handlers with Visual Button Morphing Feedback
     const copyAmountBtn = document.getElementById('copyAmountBtn');
     const copyUpiBtn = document.getElementById('copyUpiBtn');
