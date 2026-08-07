@@ -118,18 +118,19 @@ body::after {
     align-items: center;
 }
 
-/* Header Section & IEEE Branding */
+/* Header Section & Senior UI/UX Branding System */
 .header-section {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
+    width: 100%;
 }
 
 .logo-banner-container {
     background: #FFFFFF;
-    padding: 10px 14px;
+    padding: 10px 16px;
     border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 16px rgba(59, 45, 37, 0.08);
@@ -138,42 +139,31 @@ body::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 4px;
     backdrop-filter: blur(10px);
 }
 
 .chapter-logo-img {
     width: 100%;
     height: auto;
-    max-height: 90px;
+    max-height: 85px;
     object-fit: contain;
     display: block;
 }
 
-.ieee-branding-badge {
-    display: inline-flex;
+.hero-text-block {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    color: var(--primary-color);
-    padding: 7px 16px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 12px rgba(59, 45, 37, 0.04);
+    gap: 4px;
 }
 
 .header-title {
-    font-size: 2.375rem;
+    font-size: 2.625rem;
     font-weight: 800;
     color: var(--primary-color);
     letter-spacing: -0.04em;
-    line-height: 1.05;
+    line-height: 1;
+    text-transform: uppercase;
 }
 
 .header-tagline {
