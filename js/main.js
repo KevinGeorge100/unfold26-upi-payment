@@ -16,6 +16,16 @@ window.switchTicket = function(key) {
         return;
     }
 
+    // Direct synchronous active tab toggle for 0ms visual shift
+    const tabs = document.querySelectorAll('.ticket-tab');
+    if (tabs) {
+        tabs.forEach(tab => {
+            const isMatch = (tab.getAttribute('data-ticket') === key);
+            tab.classList.toggle('active', isMatch);
+            tab.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+        });
+    }
+
     const tier = TICKET_TIERS[key];
     const newConfig = {
         ...currentConfig,

@@ -286,7 +286,7 @@ body::after {
 .selected-badge-indicator {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--success-color);
+    color: var(--primary-color);
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -297,10 +297,10 @@ body::after {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     width: 100%;
-    background: rgba(230, 222, 212, 0.4);
+    background: rgba(230, 222, 212, 0.5);
     padding: 6px;
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(214, 201, 189, 0.5);
+    border: 1px solid rgba(214, 201, 189, 0.6);
     backdrop-filter: blur(10px);
 }
 
@@ -316,24 +316,28 @@ body::after {
     align-items: center;
     justify-content: center;
     padding: 10px 6px;
-    background: transparent;
-    border: 1.5px solid transparent;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1.5px solid rgba(214, 201, 189, 0.5);
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: center;
     user-select: none;
     position: relative;
+    opacity: 0.75;
 }
 
 .ticket-tab:hover {
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.85);
+    opacity: 0.95;
 }
 
 .ticket-tab.active {
-    background: #FFFFFF;
-    border-color: var(--primary-color);
-    box-shadow: var(--shadow-tab);
+    background: #FFFFFF !important;
+    border: 2.5px solid var(--primary-color) !important;
+    box-shadow: 0 6px 18px rgba(59, 45, 37, 0.18) !important;
+    transform: translateY(-2px) scale(1.02);
+    opacity: 1 !important;
 }
 
 .tab-title {
@@ -346,40 +350,41 @@ body::after {
 
 .ticket-tab.active .tab-title {
     color: var(--primary-color);
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .tab-amount {
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--text-primary);
     pointer-events: none;
 }
 
 .ticket-tab.active .tab-amount {
     color: var(--primary-color);
+    font-weight: 800;
 }
 
-/* Active Checkmark Pill on Tab */
+/* Active Checkmark Badge on Tab */
 .tab-check-icon {
     position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 16px;
-    height: 16px;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background: var(--primary-color);
     color: #FFFFFF;
     display: none;
     align-items: center;
     justify-content: center;
-    font-size: 0.625rem;
+    font-size: 0.6875rem;
     font-weight: 900;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .ticket-tab.active .tab-check-icon {
-    display: flex;
+    display: flex !important;
 }
 
 /* Stripe/Fintech Hero PAY Card Box */
