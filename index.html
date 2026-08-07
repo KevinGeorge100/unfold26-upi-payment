@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNFOLD'26 Payment</title>
+    
+    <!-- SEO & Browser Meta -->
+    <meta name="description" content="Official Payment Portal for UNFOLD'26 • Powered by IEEE IA/IE/PELS Kerala.">
+    <meta name="theme-color" content="#0066CC">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="UNFOLD'26 Payment Portal">
+    <meta property="og:description" content="Official Payment Portal for UNFOLD'26 • Powered by IEEE IA/IE/PELS Kerala. Complete your registration via UPI.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/favicon.svg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <!-- Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="page-container">
+        <main class="main-wrapper">
+
+            <!-- Header Section & IEEE Branding -->
+            <header class="header-section">
+                <div class="ieee-branding-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    Powered by IEEE IA/IE/PELS Kerala
+                </div>
+                <h1 class="header-title">UNFOLD'26</h1>
+                <p class="header-subtitle">Official Payment Portal for UNFOLD'26. Complete your registration by making the payment through any UPI app.</p>
+            </header>
+
+            <!-- Main Payment Card Surface -->
+            <section class="payment-card" aria-label="Payment Information">
+
+                <!-- Hero Amount Box (Visual Hierarchy Focus) -->
+                <div class="hero-pay-box">
+                    <div class="pay-label-group">
+                        <span class="pay-tag">PAY</span>
+                        <span id="ticketLabel" class="ticket-pill">Solo Pass</span>
+                    </div>
+                    <div class="hero-amount-row">
+                        <span id="amountVal" class="hero-amount-val">₹799</span>
+                        <button id="copyAmountBtn" class="btn-copy" aria-label="Copy Amount">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Desktop Device Banner (Shown on Desktop Browsers) -->
+                <div id="desktopNotice" class="desktop-banner hidden" role="note">
+                    <span class="desktop-banner-icon">📱</span>
+                    <div>
+                        <strong>UPI payments work best on a mobile device.</strong><br>
+                        Scan the QR code below using any UPI app (Google Pay, PhonePe, Paytm, BHIM, etc.) to complete your payment.
+                    </div>
+                </div>
+
+                <!-- Mobile Auto-Redirect Loading State -->
+                <div id="redirectLoadingBox" class="redirect-loading-box">
+                    <div class="spinner" aria-hidden="true"></div>
+                    <span class="redirect-text">Opening your UPI app...</span>
+                </div>
+
+                <!-- Payment Details List -->
+                <div class="details-list">
+                    <div class="detail-item">
+                        <span class="detail-label">Payee</span>
+                        <div class="detail-row">
+                            <span id="payeeVal" class="detail-value">KEVIN GEORGE (UNFOLD'26)</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">UPI ID</span>
+                        <div class="detail-row">
+                            <span id="upiIdVal" class="detail-value">8281651978@slc</span>
+                            <button id="copyUpiBtn" class="btn-copy" aria-label="Copy UPI ID">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy UPI ID
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fallback & QR Code Section -->
+                <div id="fallbackSection" class="fallback-section hidden">
+                    <p class="fallback-title">Couldn't open your UPI app?</p>
+
+                    <!-- Manual Open Button -->
+                    <a id="btnOpenUpi" href="#" class="btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Open UPI App
+                    </a>
+
+                    <div class="divider">OR</div>
+
+                    <!-- Dynamic QR Code Container -->
+                    <div class="qr-container-wrapper">
+                        <div id="qrContainer" class="qr-code-box"></div>
+                        <span class="qr-caption">Scan QR code using Google Pay, PhonePe, Paytm, or BHIM</span>
+                    </div>
+
+                    <!-- Completion Button -->
+                    <button id="btnCompleted" class="btn-completed" type="button">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        I've Completed Payment
+                    </button>
+                </div>
+
+            </section>
+
+            <!-- Instructions Box -->
+            <aside class="instructions-card" aria-label="Instructions">
+                <h2 class="instructions-title">Instructions</h2>
+                <ol class="instructions-list">
+                    <li>
+                        <span class="step-num">1</span>
+                        <span>Complete the payment in your UPI app.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">2</span>
+                        <span>Return to the registration page.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">3</span>
+                        <span>Enter your UTR / Transaction ID if requested.</span>
+                    </li>
+                </ol>
+            </aside>
+
+            <!-- Ticket Support Footer -->
+            <footer class="footer-text">
+                <span>Official Payment Portal for UNFOLD'26</span>
+                <span>Need help with payment? <a href="mailto:support@unfold2026.org">Contact Ticket Support</a></span>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Completion Modal Window -->
+    <div id="completionModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card">
+            <div class="modal-icon-badge">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h3 id="modalTitle" class="modal-title">Payment Recorded!</h3>
+            <p class="modal-desc">Thank you for making the payment for UNFOLD'26. Please return to your registration form and enter your UTR / Transaction ID to finalize your ticket.</p>
+            <button id="btnCloseModal" class="btn-close-modal" type="button">Return to Registration</button>
+        </div>
+    </div>
+
+    <!-- Copy Toast Notification -->
+    <div id="toast" class="toast-container" role="status" aria-live="polite">
+        <svg class="toast-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toastMessage">Copied to clipboard!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/qrcode.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

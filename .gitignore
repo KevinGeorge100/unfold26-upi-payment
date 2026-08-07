@@ -1,0 +1,10 @@
+# OS & IDE Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Build & Logs
+*.log
+node_modules/
+.vercel/
