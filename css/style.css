@@ -315,7 +315,7 @@ body::after {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px 6px;
+    padding: 12px 6px;
     background: rgba(255, 255, 255, 0.4);
     border: 1.5px solid rgba(214, 201, 189, 0.5);
     border-radius: var(--radius-md);
@@ -341,7 +341,7 @@ body::after {
 }
 
 .tab-title {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--text-secondary);
     line-height: 1.2;
@@ -349,18 +349,6 @@ body::after {
 }
 
 .ticket-tab.active .tab-title {
-    color: var(--primary-color);
-    font-weight: 800;
-}
-
-.tab-amount {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    pointer-events: none;
-}
-
-.ticket-tab.active .tab-amount {
     color: var(--primary-color);
     font-weight: 800;
 }
