@@ -6,8 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Resolve Active Configuration (from query params or presets)
-    const config = getActiveConfig();
-    const upiDeepLink = getUpiDeepLink(config);
+    let currentConfig = getActiveConfig();
 
     // 2. Select DOM Elements
     const amountValEl = document.getElementById('amountVal');
@@ -24,29 +23,74 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCompleted = document.getElementById('btnCompleted');
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
+    const ticketTabs = document.querySelectorAll('.ticket-tab');
 
     // Completion Modal Elements
     const completionModal = document.getElementById('completionModal');
     const btnCloseModal = document.getElementById('btnCloseModal');
 
-    // 3. Populate UI with Configuration
-    const upiDeepLink = getUpiDeepLink(config);
+    /**
+     * Render UI components based on target configuration
+     * @param {Object} cfg 
+     */
+    function renderPaymentDetails(cfg) {
+        currentConfig = cfg;
+        const upiDeepLink = getUpiDeepLink(cfg);
 
-    const formattedAmount = isNaN(Number(config.amount)) ? config.amount : Number(config.amount).toLocaleString('en-IN');
-    if (amountValEl) amountValEl.textContent = `₹${formattedAmount}`;
-    if (payeeValEl) payeeValEl.textContent = config.payeeName;
-    if (upiIdValEl) upiIdValEl.textContent = config.upiId;
-    if (ticketLabelEl) ticketLabelEl.textContent = config.ticketLabel || config.name || 'Solo Pass';
-    if (btnOpenUpi) btnOpenUpi.href = upiDeepLink;
+        const formattedAmount = isNaN(Number(cfg.amount)) ? cfg.amount : Number(cfg.amount).toLocaleString('en-IN');
+        if (amountValEl) amountValEl.textContent = `₹${formattedAmount}`;
+        if (payeeValEl) payeeValEl.textContent = cfg.payeeName;
+        if (upiIdValEl) upiIdValEl.textContent = cfg.upiId;
+        if (ticketLabelEl) ticketLabelEl.textContent = cfg.ticketLabel || cfg.name || 'Solo Pass';
+        if (btnOpenUpi) btnOpenUpi.href = upiDeepLink;
 
-    // Update document title if ticket specified
-    if (config.ticketLabel && config.ticketLabel !== 'Standard Registration') {
-        document.title = `UNFOLD'26 Payment - ${config.ticketLabel}`;
+        // Update Document Title
+        if (cfg.ticketLabel && cfg.ticketLabel !== 'Standard Registration') {
+            document.title = `UNFOLD'26 Payment - ${cfg.ticketLabel}`;
+        }
+
+        // Render QR Code
+        if (qrContainer && typeof window.EasyQRCode === 'function') {
+            window.EasyQRCode(qrContainer, upiDeepLink, 180);
+        }
+
+        // Highlight Active Ticket Tab
+        if (ticketTabs) {
+            ticketTabs.forEach(tab => {
+                const isSelected = (tab.getAttribute('data-ticket') === cfg.ticketKey);
+                tab.classList.toggle('active', isSelected);
+                tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+            });
+        }
     }
 
-    // 4. Render Payment QR Code Canvas
-    if (qrContainer && typeof window.EasyQRCode === 'function') {
-        window.EasyQRCode(qrContainer, upiDeepLink, 180);
+    // Initial render
+    renderPaymentDetails(currentConfig);
+
+    // Bind Ticket Selection Tabs
+    if (ticketTabs) {
+        ticketTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const key = tab.getAttribute('data-ticket');
+                if (TICKET_TIERS[key]) {
+                    const newConfig = {
+                        ...currentConfig,
+                        amount: TICKET_TIERS[key].amount,
+                        ticketLabel: TICKET_TIERS[key].name,
+                        transactionNote: TICKET_TIERS[key].note,
+                        ticketKey: key
+                    };
+                    
+                    // Update URL query string without page reload
+                    if (window.history && window.history.replaceState) {
+                        const newUrl = window.location.pathname + `?ticket=${key}`;
+                        window.history.replaceState(null, '', newUrl);
+                    }
+
+                    renderPaymentDetails(newConfig);
+                }
+            });
+        });
     }
 
     // 5. Device Detection & Split Flow Execution

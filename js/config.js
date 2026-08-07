@@ -67,10 +67,14 @@ function getActiveConfig() {
     // 1. Check for ticket preset tier (?ticket=solo | duo | trio | team4)
     const ticketParam = urlParams.get('ticket');
     if (ticketParam && TICKET_TIERS[ticketParam.toLowerCase()]) {
-        const tier = TICKET_TIERS[ticketParam.toLowerCase()];
+        const key = ticketParam.toLowerCase();
+        const tier = TICKET_TIERS[key];
         active.amount = tier.amount;
-        active.ticketLabel = tier.label;
+        active.ticketLabel = tier.name || tier.label;
         active.transactionNote = tier.note;
+        active.ticketKey = key;
+    } else {
+        active.ticketKey = 'solo';
     }
 
     // 2. Direct Query Parameter overrides (highest priority)

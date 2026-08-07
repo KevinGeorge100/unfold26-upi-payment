@@ -47,6 +47,29 @@
             <!-- Main Payment Card Surface -->
             <section class="payment-card" aria-label="Payment Information">
 
+                <!-- Interactive Ticket Selection Tabs -->
+                <div class="ticket-selector-container">
+                    <span class="selector-label">Select Registration Pass</span>
+                    <div class="ticket-tabs" role="tablist" aria-label="Ticket Types">
+                        <button type="button" class="ticket-tab active" data-ticket="solo" role="tab" aria-selected="true">
+                            <span class="tab-title">Solo Pass</span>
+                            <span class="tab-amount">₹799</span>
+                        </button>
+                        <button type="button" class="ticket-tab" data-ticket="duo" role="tab" aria-selected="false">
+                            <span class="tab-title">Duo Pass</span>
+                            <span class="tab-amount">₹1,398</span>
+                        </button>
+                        <button type="button" class="ticket-tab" data-ticket="trio" role="tab" aria-selected="false">
+                            <span class="tab-title">Trio Pass</span>
+                            <span class="tab-amount">₹2,097</span>
+                        </button>
+                        <button type="button" class="ticket-tab" data-ticket="team4" role="tab" aria-selected="false">
+                            <span class="tab-title">Team of 4</span>
+                            <span class="tab-amount">₹2,796</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Hero Amount Box (Visual Hierarchy Focus) -->
                 <div class="hero-pay-box">
                     <div class="pay-label-group">
