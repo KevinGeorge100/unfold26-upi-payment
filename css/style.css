@@ -129,11 +129,11 @@ body::after {
 
 .logo-banner-container {
     background: #FFFFFF;
-    padding: 12px 20px;
+    padding: 10px 14px;
     border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 6px 20px -4px rgba(59, 45, 37, 0.08);
-    max-width: 400px;
+    box-shadow: 0 4px 16px rgba(59, 45, 37, 0.08);
+    max-width: 420px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -145,8 +145,9 @@ body::after {
 .chapter-logo-img {
     width: 100%;
     height: auto;
-    max-height: 85px;
+    max-height: 90px;
     object-fit: contain;
+    display: block;
 }
 
 .ieee-branding-badge {
